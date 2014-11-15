@@ -52,7 +52,7 @@
 #define INT_RESERVED_MASK  0x0000807f  /* Reserved bits that must be ignored */
 
 #define NUM_INTERRUPTS  32
-#define INTERRUPT_MASK 0x80
+
 #ifndef ASSEMBLER
 
 void interrupt_panic(unsigned int int_num) __attribute__((noreturn));
