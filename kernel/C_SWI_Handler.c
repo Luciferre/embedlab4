@@ -10,6 +10,7 @@
 #include <exports.h>
 #include <bits/swi.h>
 
+void invalid_syscall(unsigned int call_num);
 ssize_t read_syscall(int fd, void* buf, size_t count);
 ssize_t write_syscall(int fd, void* buf, size_t count);
 unsigned long time_syscall(void);
@@ -34,7 +35,8 @@ void C_SWI_Handler(unsigned num, unsigned* regs)
 			sleep_syscall((unsigned long)regs[0]);
 			break;
 		default:
-			puts("instruction is unrecognized\n");
+			//puts("instruction is unrecognized\n");
+			invalid_syscall(num);
 		//	exit(0x0badc0de);
 			break;
 	}

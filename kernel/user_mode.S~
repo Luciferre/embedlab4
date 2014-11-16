@@ -18,7 +18,7 @@ user_mode:
 	ldr	r3, =ksp
 	str	sp, [r3]
 	ldr     r3, =r8
-    str     r8, [r3]
+    	str     r8, [r3]
 	mrs	r4, cpsr
 	bic	r4, r4, #0xff
 	orr	r4, r4, #0x50
@@ -29,4 +29,4 @@ user_mode:
 	stmfd	sp!,{r0}
 	stmfd	sp!,{r1}
 	ldr	pc, =0xa0000000
-	swi	EXIT_SWI
+	

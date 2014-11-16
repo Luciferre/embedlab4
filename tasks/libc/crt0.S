@@ -19,4 +19,5 @@ _start:
 	ldr	r0, [sp, #4]
 	ldr	r1, [sp]
 	bl	main
-	
+loop:
+	b	loop
