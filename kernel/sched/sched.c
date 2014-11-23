@@ -64,8 +64,8 @@ void allocate_tasks(task_t** tasks  __attribute__((unused)), size_t num_tasks  _
 		system_tcb[i].context.lr = &launch_task;
 		system_tcb[i].holds_lock = 0;
 		system_tcb[i].sleep_queue = 0;
-		system_tcb[i].kstack[0] = (uint32_t)tasks[i]->stack_pos;//how to initialize?
-		system_tcb[i].kstack_high[0] = (uint32_t)tasks[i]->stack_pos + OS_KSTACK_SIZE/sizeof(uint32_t); // how to initialize?
+		//system_tcb[i].kstack[0] = (uint32_t)tasks[i]->stack_pos;//how to initialize?
+		system_tcb[i].kstack_high[0] = system_tcb[i].kstack[0] + OS_KSTACK_SIZE/sizeof(uint32_t); // how to initialize?
 	
 		runqueue_add(&system_tcb[i], i);
 	}
@@ -78,8 +78,8 @@ void allocate_tasks(task_t** tasks  __attribute__((unused)), size_t num_tasks  _
 	system_tcb[63].context.lr = &launch_task;
 	system_tcb[63].holds_lock = 0;
 	system_tcb[63].sleep_queue = 0;  	
-	system_tcb[63].kstack[0] = (uint32_t) &idle_stack[0];//idle stack is useful?
-  	system_tcb[63].kstack_high[0] = (uint32_t) &idle_stack[0] + OS_KSTACK_SIZE/sizeof(uint32_t);//how to initialize?
+	//system_tcb[63].kstack[0] = (uint32_t) &idle_stack[0];//idle stack is useful?
+  	system_tcb[63].kstack_high[0] = system_tcb[63].kstack[0] + OS_KSTACK_SIZE/sizeof(uint32_t);//how to initialize?
 	runqueue_add(&system_tcb[63], 63);
 	//dispatch_init(&system_tcb[63]);
 	dispatch_nosave();
