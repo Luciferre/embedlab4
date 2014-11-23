@@ -29,8 +29,11 @@ int task_create(task_t* tasks  __attribute__((unused)), size_t num_tasks  __attr
 	if(num_tasks > OS_MAX_TASKS - 2 )
 		return EINVAL;
 	//tasks points to region whose bounds lie outside valid address space
-	if(!valid_addr(&tasks, sizeof(task_t) * num_tasks, USR_START_ADDR, USR_END_ADDR))
-		return EFAULT;
+	
+	for(i = 0; i < num_tasks; i++){
+		if(!valid_addr(tasks[i].stack_pos, 0, USR_START_ADDR, USR_END_ADDR))
+			return EFAULT;
+	}
 	//The given task set is not schedulable – some tasks may not meet their deadlines
 	for (i = 0; i < num_tasks; i++){
 		if(tasks[i].T < tasks[i].C || tasks[i].T == 0)
