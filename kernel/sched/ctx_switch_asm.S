@@ -61,3 +61,4 @@ FUNC(enable_int)
 	eor r2,r1
 	msr cpsr, r2
 	ldmfd sp!, {r1, r2}
+	mov pc,lr

@@ -11,11 +11,10 @@
  */
 
 	.file "ctx_switch_asm.S"
-	.text
-	.global enable_interrupts
+
 #include <asm.h>
 #include <arm/psr.h>
-#include <arm/exception.h>
+
 #include <arm/interrupt.h>
 /**
  * @brief Special exit routine from the scheduler that launches a task for the
