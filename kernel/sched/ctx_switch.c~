@@ -75,7 +75,13 @@ void dispatch_nosave(void)
  */
 void dispatch_sleep(void)
 {
-	
+	disable_interrupts();
+	tcb_t *last_tcb = cur_tcb;
+	uint8_t prio = highest_prio();
+	cur_tcb = runqueue_remove(prio);
+    	ctx_switch_full(&(cur_tcb->context),&(last_tcb->context)) ;
+
+   	enable_interrupts();
 }
 
 /**
