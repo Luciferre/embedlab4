@@ -59,7 +59,7 @@ void allocate_tasks(task_t** tasks  __attribute__((unused)), size_t num_tasks  _
 		system_tcb[i].native_prio = i;
 		system_tcb[i].context.r4 = (uint32_t)tasks[i]->lambda;
 		system_tcb[i].context.r5 = (uint32_t)tasks[i]->data;
-		system_tcb[i].context.r6 = tasks[i]->stack_pos;
+		system_tcb[i].context.r6 = (uint32_t)tasks[i]->stack_pos;
 		system_tcb[i].context.sp = tasks[i]->stack_pos;
 		system_tcb[i].context.lr = &launch_task;
 		system_tcb[i].holds_lock = 0;
@@ -74,7 +74,7 @@ void allocate_tasks(task_t** tasks  __attribute__((unused)), size_t num_tasks  _
    	system_tcb[63].context.r4 = (uint32_t) &idle;
    	system_tcb[63].context.r5 = 0;
   	system_tcb[63].context.r6 = (uint32_t) &idle_stack[0] ;
-  	system_tcb[63].context.sp = (uint32_t) &idle_stack[0] ;
+  	system_tcb[63].context.sp = &idle_stack[0] ;
 	system_tcb[63].context.lr = &launch_task;
 	system_tcb[63].holds_lock = 0;
 	system_tcb[63].sleep_queue = 0;  	
