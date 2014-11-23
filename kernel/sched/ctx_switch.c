@@ -50,7 +50,6 @@ void dispatch_save(void)
 	runqueue_add(last_tcb, last_tcb->native_prio);
     	ctx_switch_full(&(cur_tcb->context),&(last_tcb->context)) ;
 
-   	enable_interrupts();
 }
 
 /**
@@ -84,7 +83,6 @@ void dispatch_sleep(void)
 	cur_tcb = runqueue_remove(prio);
     	ctx_switch_full(&(cur_tcb->context),&(last_tcb->context)) ;
 
-   	enable_interrupts();
 }
 
 /**
