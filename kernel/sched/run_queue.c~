@@ -120,6 +120,6 @@ uint8_t highest_prio(void)
 {
 	uint8_t OSTCBY = prio_unmap_table[group_run_bits];
 	uint8_t OSTCBX = prio_unmap_table[run_bits[OSTCBY]];
-    return (OSTCBY << 3) + OSTCBX;
+   	return (OSTCBY << 3) + OSTCBX;
 	
 }

@@ -46,7 +46,7 @@ void dispatch_save(void)
 	tcb_t *last_tcb = cur_tcb;
 	uint8_t prio = highest_prio();
 	cur_tcb = runqueue_remove(prio);
-	runqueue_add(last_tcb);
+	runqueue_add(last_tcb, last_tcb->native_prio);
     	ctx_switch_full(&(cur_tcb->context),&(last_tcb->context)) ;
 
    	enable_interrupts();
