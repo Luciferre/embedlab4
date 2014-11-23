@@ -11,10 +11,12 @@
  */
 
 	.file "ctx_switch_asm.S"
-
+	.text
+	.global enable_interrupts
 #include <asm.h>
 #include <arm/psr.h>
-
+#include <arm/exception.h>
+#include <arm/interrupt.h>
 /**
  * @brief Special exit routine from the scheduler that launches a task for the
  * first time.
@@ -41,10 +43,22 @@ FUNC(launch_task)
 /* r0 points to the target context, r1 to the current context. */
 /* add your code to perform a full context switch */
 FUNC(ctx_switch_full)
-
+	stmia r1,{r4-r11,sp,lr}
+   	ldmfd r0,{r4-r11,sp,lr}
+  	mov pc, lr
 
 /*add your code to perform a half context switch */	
 FUNC(ctx_switch_half)
 	ldmfd r0,{r4-r11,sp,lr}
+	stmfd sp!, {lr}
+ 	bl enable_int
+	ldmfd sp!, {lr}
    	mov pc, lr
 
+FUNC(enable_int)
+	stmfd sp!, {r1, r2}
+	mov r1, #INTERRUPT_MASK
+	mrs r2,cpsr
+	eor r2,r1
+	msr cpsr, r2
+	ldmfd sp!, {r1, r2}

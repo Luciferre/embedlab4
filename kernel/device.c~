@@ -62,11 +62,11 @@ void dev_init(void)
 void dev_wait(unsigned int dev __attribute__((unused)))
 { 
   	tcb_t* cur_tcb = get_cur_tcb();
- 	tcb_t* sleep_queue = devices[dev].sleep_queue;
+ 	tcb_t* sleep_queue = devices[dev].sleep_q;
   	if(sleep_queue == 0)
 	{
-		devices[dev].sleep_queue = cur_tcb;
-		devices[dev].sleep_queue -> sleep_queue = 0;
+		devices[dev].sleep_q = cur_tcb;
+		devices[dev].sleep_q -> sleep_queue = 0;
 	}
 	else{
 		while(sleep_queue -> sleep_queue !=0)

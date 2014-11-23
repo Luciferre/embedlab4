@@ -43,6 +43,7 @@ void dispatch_init(tcb_t* idle __attribute__((unused)))
 void dispatch_save(void)
 {
 	disable_interrupts();
+	printf("dispatch save\n");
 	tcb_t *last_tcb = cur_tcb;
 	uint8_t prio = highest_prio();
 	cur_tcb = runqueue_remove(prio);
@@ -61,6 +62,7 @@ void dispatch_save(void)
 void dispatch_nosave(void)
 {
 	disable_interrupts();
+	printf("dispatch nosave\n");
     	uint8_t prio = highest_prio();
 	cur_tcb = runqueue_remove(prio);
    	ctx_switch_half(&(cur_tcb->context)) ;

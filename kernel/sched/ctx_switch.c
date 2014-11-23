@@ -66,7 +66,7 @@ void dispatch_nosave(void)
     	uint8_t prio = highest_prio();
 	cur_tcb = runqueue_remove(prio);
    	ctx_switch_half(&(cur_tcb->context)) ;
-   	enable_interrupts();
+  
 }
 
 

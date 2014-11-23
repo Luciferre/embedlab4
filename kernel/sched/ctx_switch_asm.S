@@ -15,6 +15,7 @@
 #include <asm.h>
 #include <arm/psr.h>
 
+#include <arm/interrupt.h>
 /**
  * @brief Special exit routine from the scheduler that launches a task for the
  * first time.
@@ -48,5 +49,15 @@ FUNC(ctx_switch_full)
 /*add your code to perform a half context switch */	
 FUNC(ctx_switch_half)
 	ldmfd r0,{r4-r11,sp,lr}
+	stmfd sp!, {lr}
+ 	bl enable_int
+	ldmfd sp!, {lr}
    	mov pc, lr
 
+FUNC(enable_int)
+	stmfd sp!, {r1, r2}
+	mov r1, #INTERRUPT_MASK
+	mrs r2,cpsr
+	eor r2,r1
+	msr cpsr, r2
+	ldmfd sp!, {r1, r2}

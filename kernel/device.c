@@ -100,10 +100,10 @@ void dev_update(unsigned long millis __attribute__((unused)))
 				   	sleep_queue = sleep_queue->sleep_queue;
 				 }
               			 devices[i].sleep_q = 0;
-           	    		
+           	    		 dispatch_save();
            		 }
 		}  
 	}
-	dispatch_save();
+
 }
 
