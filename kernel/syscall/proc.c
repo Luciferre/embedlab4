@@ -24,11 +24,34 @@
 
 int task_create(task_t* tasks  __attribute__((unused)), size_t num_tasks  __attribute__((unused)))
 {
+	size_t i = 0;
+	//num tasks is greater than the maximum number of tasks the OS supports
+	if(num_tasks > OS_MAX_TASKS - 2 )
+		return EINVAL;
+	//tasks points to region whose bounds lie outside valid address space
+	if(!valid_addr(&tasks, sizeof(task_t) * num_tasks, USR_START_ADDR, USR_END_ADDR))
+		return EFAULT;
+	//The given task set is not schedulable – some tasks may not meet their deadlines
+	for (i = 0; i < num_tasks; i++){
+		if(tasks[i].T < tasks[i].C || tasks[i].T == 0)
+			return ESCHED;
+	}
+	if(!assign_schedule(&tasks, num_tasks))//ub_test
+		return ESCHED;
+
+	allocate_tasks(&tasks, num_tasks);
+
   return 1; /* remove this line after adding your code */
 }
 
 int event_wait(unsigned int dev  __attribute__((unused)))
 {
+
+	if (dev > NUM_DEVICES)
+  	{
+		return EINVAL;
+  	}
+  	dev_wait(dev);
   return 1; /* remove this line after adding your code */	
 }
 

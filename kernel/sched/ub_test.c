@@ -29,8 +29,27 @@
  */
 int assign_schedule(task_t** tasks  __attribute__((unused)), size_t num_tasks  __attribute__((unused)))
 {
-
-	return 1; // fix this; dummy return to prevent compiler warnings	
+	int u_n = 0, u_max;
+	unsigned i, j;
+	task_t tmp_task;
+	for(i =0; i < num_tasks; i++)
+	{
+		u_n += ((*tasks)[i].C) / ((*tasks)[i].T);
+		for(j = 0; j < num_tasks; j++)
+		{
+			if((*tasks)[j].T > (*tasks)[j+1].T){
+				tmp_task = (*tasks)[j];
+				(*tasks)[j] = (*tasks)[j+1];
+				(*tasks)[j+1] = tmp_task;
+			}
+		}
+		
+	}
+	
+	u_max = num_tasks * ((2 << (1 / num_tasks)) - 1);
+	if(u_n <= u_max)		
+		return 1;
+	return 0; 
 }
 	
 

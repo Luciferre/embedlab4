@@ -10,6 +10,7 @@
 #include <arm/reg.h>
 #include <arm/timer.h>
 #include <arm/interrupt.h>
+#include <device.h>
 
 volatile unsigned long system_time=0;
 volatile unsigned long time_drift=0;
@@ -34,5 +35,6 @@ void irqHandler(){
     }
     reg_write(OSTMR_OSCR_ADDR,0);
     reg_set(OSTMR_OSSR_ADDR, OSTMR_OSSR_M0);
-
+	
+	dev_update(system_time);
 }

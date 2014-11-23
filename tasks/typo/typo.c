@@ -12,7 +12,7 @@
 #include <stdio.h>
 #define BLOCK 100
 
-int main(int argc, char** argv)
+int main()
 {
 	char buffer[BLOCK+1];
 	char prompt1[] = "Please type characters within 100 length!\n";

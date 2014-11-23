@@ -58,7 +58,14 @@ static uint8_t prio_unmap_table[]  __attribute__((unused)) =
  */
 void runqueue_init(void)
 {
-	
+	int i;
+	for (i = 0; i < OS_MAX_TASKS; i ++) {
+        	run_list[i] = 0;
+    	}
+	for (i = 0; i < OS_MAX_TASKS/8; i ++) {
+        	run_bits[i] = 0;
+	}    	
+    	group_run_bits = 0;
 }
 
 /**
@@ -71,7 +78,14 @@ void runqueue_init(void)
  */
 void runqueue_add(tcb_t* tcb  __attribute__((unused)), uint8_t prio  __attribute__((unused)))
 {
-	
+	uint8_t OSTCBY = prio >> 3;
+        uint8_t OSTCBX = prio & 0x07;
+	group_run_bits = group_run_bits | (1 << OSTCBY);
+	run_bits[OSTCBY] = run_bits[OSTCBY] | (1 << OSTCBX);
+	if(run_list[prio] == 0){
+		run_list[prio] = tcb;
+	}
+	printf("group_run_bits = %x, run_bits = %x\n", group_run_bits, run_bits[OSTCBY]);
 }
 
 
@@ -84,7 +98,18 @@ void runqueue_add(tcb_t* tcb  __attribute__((unused)), uint8_t prio  __attribute
  */
 tcb_t* runqueue_remove(uint8_t prio  __attribute__((unused)))
 {
-	return (tcb_t *)1; // fix this; dummy return to prevent warning messages	
+	uint8_t OSTCBY = prio >> 3;
+	uint8_t OSTCBX = prio & 0x07;
+
+	tcb_t* removed_tcb = run_list[prio];
+	run_list[prio] = 0;
+
+        run_bits[OSTCBY] = run_bits[OSTCBY] & ~(0x1 << OSTCBX);
+	if(run_bits[OSTCBY] == 0)
+        	group_run_bits = group_run_bits & ~(0x1 << OSTCBY);
+
+	printf("group_run_bits = %x, run_bits = %x\n", group_run_bits, run_bits[OSTCBY]);
+	return removed_tcb;
 }
 
 /**
@@ -93,5 +118,8 @@ tcb_t* runqueue_remove(uint8_t prio  __attribute__((unused)))
  */
 uint8_t highest_prio(void)
 {
-	return 1; // fix this; dummy return to prevent warning messages	
+	uint8_t OSTCBY = prio_unmap_table[group_run_bits];
+	uint8_t OSTCBX = prio_unmap_table[run_bits[OSTCBY]];
+   	return (OSTCBY << 3) + OSTCBX;
+	
 }

@@ -2,7 +2,8 @@
  *
  * @brief Echos characters back with timing data.
  * 
- * Authors: shang <shang@andrew.cmu.edu>          
+ * Authors: shang <shang@andrew.cmu.edu>  
+ *        jian wang <jianw3@andrew.cmu.edu>        
  * Date:    9:22 Nov 3
  * Links to libc.
  */
@@ -11,7 +12,7 @@
 #include <stdio.h>
 #define BLOCK 100
 
-int main(int argc, char** argv)
+int main(int argc)
 {
 	char buffer[BLOCK+1];
 	char prompt1[] = "Please type characters within 100 length!\n";

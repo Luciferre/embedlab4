@@ -31,7 +31,7 @@
 
 struct dev
 {
-	tcb_t* sleep_queue;
+	tcb_t* sleep_q;
 	unsigned long   next_match;
 };
 typedef struct dev dev_t;
@@ -45,8 +45,11 @@ static dev_t devices[NUM_DEVICES];
  */
 void dev_init(void)
 {
-   /* the following line is to get rid of the warning and should not be needed */	
-   devices[0]=devices[0];
+	int i;
+	for (i = 0; i < NUM_DEVICES; i++) {
+        	devices[i].sleep_q = 0;
+        	devices[i].next_match = dev_freq[i];
+    	} 
 }
 
 
@@ -57,8 +60,23 @@ void dev_init(void)
  * @param dev  Device number.
  */
 void dev_wait(unsigned int dev __attribute__((unused)))
-{
-	
+{ 
+  	tcb_t* cur_tcb = get_cur_tcb();
+ 	tcb_t* sleep_queue = devices[dev].sleep_q;
+  	if(sleep_queue == 0)
+	{
+		devices[dev].sleep_q = cur_tcb;
+		devices[dev].sleep_q -> sleep_queue = 0;
+	}
+	else{
+		while(sleep_queue -> sleep_queue !=0)
+			sleep_queue = sleep_queue -> sleep_queue;
+		sleep_queue->sleep_queue = cur_tcb;
+		sleep_queue = sleep_queue-> sleep_queue;
+		sleep_queue -> sleep_queue =0;
+	}
+  
+  	dispatch_sleep();
 }
 
 
@@ -71,6 +89,21 @@ void dev_wait(unsigned int dev __attribute__((unused)))
  */
 void dev_update(unsigned long millis __attribute__((unused)))
 {
-	
+	int i = 0;	
+	for (i = 0; i < NUM_DEVICES; i++) {
+	        if (devices[i].next_match == millis) {
+        		devices[i].next_match += dev_freq[i];
+            		tcb_t* sleep_queue = devices[i].sleep_q;
+            		if (sleep_queue != 0) {
+               			 while(sleep_queue != 0) {
+				    	runqueue_add(sleep_queue,sleep_queue->native_prio);
+				   	sleep_queue = sleep_queue->sleep_queue;
+				 }
+              			 devices[i].sleep_q = 0;
+           	    		
+           		 }
+		}  
+	}
+	dispatch_save();
 }
 

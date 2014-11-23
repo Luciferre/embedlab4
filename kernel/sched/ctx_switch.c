@@ -13,7 +13,7 @@
 #include <config.h>
 #include <kernel.h>
 #include "sched_i.h"
-
+#include <arm/exception.h>
 #ifdef DEBUG_MUTEX
 #include <exports.h>
 #endif
@@ -28,7 +28,7 @@ static __attribute__((unused)) tcb_t* cur_tcb; /* use this if needed */
  */
 void dispatch_init(tcb_t* idle __attribute__((unused)))
 {
-	
+	cur_tcb = idle;
 }
 
 
@@ -42,7 +42,13 @@ void dispatch_init(tcb_t* idle __attribute__((unused)))
  */
 void dispatch_save(void)
 {
-	
+	disable_interrupts();
+	tcb_t *last_tcb = cur_tcb;
+	uint8_t prio = highest_prio();
+	cur_tcb = runqueue_remove(prio);
+    	ctx_switch_full(&(cur_tcb->context),&(last_tcb->context)) ;
+
+   	enable_interrupts();
 }
 
 /**
@@ -53,7 +59,11 @@ void dispatch_save(void)
  */
 void dispatch_nosave(void)
 {
-
+	disable_interrupts();
+    	uint8_t prio = highest_prio();
+	cur_tcb = runqueue_remove(prio);
+   	ctx_switch_half(&(cur_tcb->context)) ;
+   	enable_interrupts();
 }
 
 
@@ -65,7 +75,13 @@ void dispatch_nosave(void)
  */
 void dispatch_sleep(void)
 {
-	
+	disable_interrupts();
+	tcb_t *last_tcb = cur_tcb;
+	uint8_t prio = highest_prio();
+	cur_tcb = runqueue_remove(prio);
+    	ctx_switch_full(&(cur_tcb->context),&(last_tcb->context)) ;
+
+   	enable_interrupts();
 }
 
 /**
@@ -81,5 +97,5 @@ uint8_t get_cur_prio(void)
  */
 tcb_t* get_cur_tcb(void)
 {
-	return (tcb_t *) 0; //fix this; dummy return to prevent compiler warning
+	return cur_tcb;
 }

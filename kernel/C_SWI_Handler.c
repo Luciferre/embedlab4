@@ -9,12 +9,7 @@
 #include <bits/fileno.h>
 #include <exports.h>
 #include <bits/swi.h>
-
-void invalid_syscall(unsigned int call_num);
-ssize_t read_syscall(int fd, void* buf, size_t count);
-ssize_t write_syscall(int fd, void* buf, size_t count);
-unsigned long time_syscall(void);
-void sleep_syscall(unsigned long millis);
+#include <syscall.h>
 
 void C_SWI_Handler(unsigned num, unsigned* regs)
 {
@@ -34,6 +29,12 @@ void C_SWI_Handler(unsigned num, unsigned* regs)
 		case SLEEP_SWI:
 			sleep_syscall((unsigned long)regs[0]);
 			break;
+		case CREATE_SWI:
+		   	task_create((task_t *)regs[0], (size_t) regs[1]);
+		    	break;
+		case EVENT_WAIT:
+		   	event_wait((unsigned int) regs[0]);
+		   	break;
 		default:
 			//puts("instruction is unrecognized\n");
 			invalid_syscall(num);
