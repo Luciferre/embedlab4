@@ -42,15 +42,15 @@ void C_SWI_Handler(unsigned num, unsigned* regs)
 		   	event_wait((unsigned int) regs[0]);
 		   	break;
 		case MUTEX_CREATE:
-			//printf("MUTEX_CREATE_swi\n");
+			printf("MUTEX_CREATE_swi\n");
 			mutex_create();
 			break;
        	 	case MUTEX_LOCK:
-			//printf("MUTEX_LOCK_swi %c\n", regs[0]);
+			printf("MUTEX_LOCK_swi %c\n", regs[0]);
 			mutex_lock((int) regs[0]);
 			break;
         	case MUTEX_UNLOCK:
-			//printf("MUTEX_UNLOCK_swi %c\n", regs[0]);
+			printf("MUTEX_UNLOCK_swi %c\n", regs[0]);
 			mutex_unlock((int) regs[0]);
 			break;
 		default:
