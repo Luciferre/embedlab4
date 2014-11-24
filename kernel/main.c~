@@ -32,7 +32,7 @@ unsigned int irqStack[1024];
 unsigned long irqStackTop;
 extern void S_Handler();
 extern void irqHandlerAsm();
-ssize_t write_syscall(int fd, void* buf, size_t count);
+ssize_t write(int fd, void* buf, size_t count);
 extern int user_mode();
 extern void prepareIrqStack(unsigned long);
 extern void timerIrqSetup();

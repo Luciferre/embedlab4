@@ -31,6 +31,9 @@ int assign_schedule(task_t** tasks  __attribute__((unused)), size_t num_tasks  _
 {
 	int u_n = 0, u_max;
 	unsigned i, j;
+	if(num_tasks == 0)
+		return 1;	
+
 	task_t tmp_task;
 	for(i =0; i < num_tasks; i++)
 	{

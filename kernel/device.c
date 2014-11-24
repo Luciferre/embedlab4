@@ -45,6 +45,7 @@ static dev_t devices[NUM_DEVICES];
  */
 void dev_init(void)
 {
+	printf("dev_init\n");
 	int i;
 	for (i = 0; i < NUM_DEVICES; i++) {
         	devices[i].sleep_q = 0;
@@ -60,7 +61,10 @@ void dev_init(void)
  */
 void dev_wait(unsigned int dev __attribute__((unused)))
 {
+	disable_interrupts();
+
   	tcb_t* cur_tcb = get_cur_tcb();
+	printf("dev_wait sleep %d\n", cur_tcb->native_prio);
  	tcb_t* sleep_queue = devices[dev].sleep_q;
   	if(sleep_queue == 0)
 	{
@@ -76,6 +80,7 @@ void dev_wait(unsigned int dev __attribute__((unused)))
 	}
 
   	dispatch_sleep();
+	enable_interrupts();
 }
 
 /**
@@ -89,19 +94,27 @@ void dev_update(unsigned long millis __attribute__((unused)))
 {
     printf("dev update");
 	int i = 0;
+	disable_interrupts();
+	int i = 0;
+	bool_e flag = FALSE;
 	for (i = 0; i < NUM_DEVICES; i++) {
 	        if (devices[i].next_match == millis) {
         		devices[i].next_match += dev_freq[i];
             		tcb_t* sleep_queue = devices[i].sleep_q;
             		if (sleep_queue != 0) {
+				flag = TRUE;
                			 while(sleep_queue != 0) {
+					printf("dev_update wake up %d\n", sleep_queue->native_prio);
 				    	runqueue_add(sleep_queue,sleep_queue->native_prio);
 				   	sleep_queue = sleep_queue->sleep_queue;
 				 }
               			 devices[i].sleep_q = 0;
-           	    		 dispatch_save();
            		 }
 		}
 	}
+
+	if(flag == TRUE)
+		 dispatch_save();
+	enable_interrupts();
 
 }

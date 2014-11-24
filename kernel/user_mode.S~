@@ -26,7 +26,7 @@ user_mode:
 
 	ldr	sp, =0xa3000000
 	@set up user stack
-	stmfd	sp!,{r0}
-	stmfd	sp!,{r1}
+	@stmfd	sp!,{r0}
+	@stmfd	sp!,{r1}
 	ldr	pc, =0xa0000000
 	

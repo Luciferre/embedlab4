@@ -17,23 +17,28 @@ void C_SWI_Handler(unsigned num, unsigned* regs)
 	{
 		//read
 		case READ_SWI:
+			printf("read_swi %c\n", regs[1]);
 			regs[0] = read_syscall((int)regs[0], (void *)regs[1], (size_t)regs[2]);
 			break;
 		//write
 		case WRITE_SWI:
-            printf("swi handler write\n");
+			printf("write_swi %c\n", regs[1]);
 			regs[0] = write_syscall((int)regs[0], (void *)regs[1], (size_t)regs[2]);
 			break;
 		case TIME_SWI:
+			printf("time_swi\n");
 			regs[0] = time_syscall();
 			break;
 		case SLEEP_SWI:
+			printf("sleep_swi %c\n", regs[0]);
 			sleep_syscall((unsigned long)regs[0]);
 			break;
 		case CREATE_SWI:
+			printf("task_create_swi %c\n", regs[1]);
 		   	task_create((task_t *)regs[0], (size_t) regs[1]);
 		    	break;
 		case EVENT_WAIT:
+			printf("event_swi %c\n", regs[0]);
 		   	event_wait((unsigned int) regs[0]);
 		   	break;
 		default:

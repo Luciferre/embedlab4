@@ -17,7 +17,7 @@ user_mode:
 	stmfd	sp!, {r0-r12, lr}
 	ldr	r3, =ksp
 	str	sp, [r3]
-	ldr     r3, =r8
+	ldr     r3, =global_data
     	str     r8, [r3]
 	mrs	r4, cpsr
 	bic	r4, r4, #0xff
