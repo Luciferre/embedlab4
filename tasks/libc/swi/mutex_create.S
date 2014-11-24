@@ -11,5 +11,14 @@
 	.file "mutex_create.S"
 
 FUNC(mutex_create)
-	swi MUTEX_CREATE
-	mov pc, lr
+	ldr	r3, =errno
+	swi	MUTEX_CREATE
+	cmp	r0, #0
+	bge	ret
+	neg	r0, r0
+	str	r0, [r3]
+	mov	r0, #-1
+ret:
+	mov	pc, lr
+
+

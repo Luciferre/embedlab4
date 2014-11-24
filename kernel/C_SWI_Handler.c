@@ -35,11 +35,11 @@ void C_SWI_Handler(unsigned num, unsigned* regs)
 			break;
 		case CREATE_SWI:
 			//printf("CREATE_SWI %d\n", regs[1]);
-		   	task_create((task_t *)regs[0], (size_t) regs[1]);
+		   	regs[0] =task_create((task_t *)regs[0], (size_t) regs[1]);
 		    	break;
 		case EVENT_WAIT:
 			//printf("EVENT_WAIT_swi %d\n", regs[0]);
-		   	event_wait((unsigned int) regs[0]);
+		   	regs[0] =event_wait((unsigned int) regs[0]);
 		   	break;
 		case MUTEX_CREATE:
 			printf("MUTEX_CREATE_swi\n");

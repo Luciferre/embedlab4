@@ -66,9 +66,11 @@ int main(int argc, char** argv)
 
 	// this should fail and return EINVAL
 	ret = task_create(tasks, 65);
+	printf("errno %d\n", errno);
 	check_return(errno,EINVAL,"1. Test create return EINVAL");
 	// this should return EFAULT
 	ret = task_create((task_t *)0xdeadbeef, 30);
+	printf("errno %d\n", errno);
 	check_return(errno,EFAULT,"2. Test create return EFAULT");
 	
 	ret = task_create(tasks, 1);

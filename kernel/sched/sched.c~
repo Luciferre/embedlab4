@@ -51,7 +51,7 @@ static void __attribute__((unused)) idle(void)
  */
 void allocate_tasks(task_t** tasks  __attribute__((unused)), size_t num_tasks  __attribute__((unused)))
 {
-	printf("allocate task\n");
+	//printf("allocate task\n");
 	unsigned int i;
 	dev_init();
 	runqueue_init();
@@ -66,8 +66,8 @@ void allocate_tasks(task_t** tasks  __attribute__((unused)), size_t num_tasks  _
 		system_tcb[i+1].context.sp = (void *)system_tcb[i+1].kstack_high;
 		system_tcb[i+1].context.lr = launch_task;
 		system_tcb[i+1].context.r8 = global_data;
-		//printf("r4:%d	r5:%d	r6:%d	r7:%d\n",system_tcb[i+1].context.r4,system_tcb[i+1].context.r5,system_tcb[i+1].context.r6, system_tcb[i+1].context.r7);
-		//printf("task r4:%d	r5:%d	r6:%d\n",(*tasks)[i].lambda,(*tasks)[i].data,(*tasks)[i].stack_pos);
+		printf("r4:%d	r5:%d	r6:%d	r7:%d\n",system_tcb[i+1].context.r4,system_tcb[i+1].context.r5,system_tcb[i+1].context.r6, system_tcb[i+1].context.r7);
+		printf("task r4:%d	r5:%d	r6:%d\n",(*tasks)[i].lambda,(*tasks)[i].data,(*tasks)[i].stack_pos);
 		system_tcb[i+1].holds_lock = 0;
 		system_tcb[i+1].sleep_queue = 0;
 		//system_tcb[i].kstack[0] = (uint32_t)tasks[i]->stack_pos;//how to initialize?

@@ -12,5 +12,13 @@
 	.file "task_create.S"
 
 FUNC(task_create)
-	swi     CREATE_SWI
-        mov     pc, lr
+	
+	swi	CREATE_SWI
+	cmp	r0, #0
+	bge	ret
+	neg	r0, r0
+	ldr	r3, =errno
+	str	r0, [r3]
+	mov	r0, #-1
+ret:
+	mov	pc, lr
