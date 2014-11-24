@@ -59,8 +59,8 @@ int mutex_create(void)
 
 int mutex_lock(int mutex  __attribute__((unused)))
 {
-    tcb_t *cur_tcb;
-    tcb_t *cur_holding_tcb;
+    tcb_t *cur_tcb=NULL;
+    tcb_t *cur_holding_tcb=NULL;
     disable_interrupts();
     if((mutex >= OS_NUM_MUTEX) || (mutex < 0)){
         enable_interrupts();
@@ -135,5 +135,6 @@ int mutex_unlock(int mutex  __attribute__((unused)))
         gtMutex[mutex].bLock = FALSE;
     }
     dispatch_save();
+    enable_interrupts();
 	return 0; // fix this to return the correct value
 }
