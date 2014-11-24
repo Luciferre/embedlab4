@@ -14,10 +14,11 @@ MAKEFLAGS += -rR
 # Make sure there are no name clashes.  Add new ones here if you make your own
 # tests (which I recommend you do).
 
-PACKAGES = dagger typo splat
+PACKAGES = dagger sys_err simple_mutex cyclone mutex_chaser stress
 
 .PHONY: all package clean clobber $(PACKAGES)
 all: package kernel
+
 
 ############### ENVIRONMENT #####################
 
@@ -51,11 +52,11 @@ CWARNINGS_SAFE = -Wall -Wno-unused-parameter -Wextra -Wpointer-arith \
 CWARNINGS =  $(CWARNINGS_SAFE)
 CWARNINGS1 = $(CWARNINGS_SAFE) $(CWARNINGS_NOISY)
 
-KCFLAGS = -Os -g -ffreestanding -ffixed-r8 -nostdinc $(CWARNINGS)
-TCFLAGS = -Os -g -ffreestanding -nostdinc $(CWARNINGS)
-ASFLAGS = -nostdinc -g -Wall -Wextra -Werror -DASSEMBLER
-KLDFLAGS = -nostdlib -g -N --fatal-warnings --warn-common -Ttext $(KLOAD_ADDR)
-TLDFLAGS = -nostdlib -g -N --fatal-warnings --warn-common -Ttext $(TLOAD_ADDR)
+KCFLAGS = -Os -ffreestanding -ffixed-r8 -nostdinc $(CWARNINGS)
+TCFLAGS = -Os -ffreestanding -nostdinc $(CWARNINGS)
+ASFLAGS = -nostdinc -Wall -Wextra -Werror -DASSEMBLER
+KLDFLAGS = -nostdlib -N --fatal-warnings --warn-common -Ttext $(KLOAD_ADDR)
+TLDFLAGS = -nostdlib -N --fatal-warnings --warn-common -Ttext $(TLOAD_ADDR)
 
 KINCLUDES = -I$(UDIR)/include -I$(KDIR)/include
 TINCLUDES = -I$(TLIBCDIR)/include
@@ -65,6 +66,7 @@ TINCLUDES = -I$(TLIBCDIR)/include
 include $(UDIR)/uboot.mk
 include $(KDIR)/kernel.mk
 include $(TDIR)/tasks.mk
+
 
 ########### PATTERNED VARIABLES #################
 
@@ -79,6 +81,7 @@ $(UDIR)/%: CFLAGS=$(KCFLAGS)
 $(TDIR)/%: LDFLAGS=$(TLDFLAGS)
 $(KDIR)/%: LDFLAGS=$(KLDFLAGS)
 $(UDIR)/%: LDFLAGS=$(KLDFLAGS)
+
 
 ############### PACKAGE RULES ###################
 
@@ -121,6 +124,7 @@ kernel : $(KERNEL).bin
 	@echo OBJCOPY $(notdir $<) $(notdir $@)
 	@$(OBJCOPY) -O binary $< $@
 
+
 ############### CLEANING RULES ##################
 
 clean:
@@ -139,6 +143,7 @@ clobber: clean
 	@echo CLEAN others
 	@$(RM) $(ALL_CLOBBERS)
 
+
 ########### DEPENDENCY FILE INCLUSION ############
 
 ifeq (0,$(words $(findstring clean,$(MAKECMDGOALS))))
@@ -148,3 +153,4 @@ ifneq (,$(ALL_OBJS))
 endif
 endif
 endif
+

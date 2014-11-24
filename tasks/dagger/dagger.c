@@ -11,6 +11,7 @@
 #include <task.h>
 #include <unistd.h>
 
+
 void panic(const char* str)
 {
 	puts(str);
@@ -21,9 +22,7 @@ void fun1(void* str)
 {
 	while(1)
 	{
-        //printf("task1 str %d\n",(int)str);
 		putchar((int)str);
-
 		if (event_wait(0) < 0)
 			panic("Dev 0 failed");
 	}
@@ -33,7 +32,6 @@ void fun2(void* str)
 {
 	while(1)
 	{
-        //printf("task2 str %d\n",(int)str);
 		putchar((int)str);
 		if (event_wait(1) < 0)
 			panic("Dev 1 failed");
@@ -53,11 +51,11 @@ int main(int argc, char** argv)
 	tasks[1].stack_pos = (void*)0xa1000000;
 	tasks[1].C = 1;
 	tasks[1].T = PERIOD_DEV1;
-
+	
 	task_create(tasks, 2);
 	argc=argc; /* remove compiler warning */
-	argv[0]=argv[0]; /* remove compiler warning */
+	argv=argv; /* remove compiler warning */
 
-	puts("Why did your code get here!\n");
+	puts("Elvis could not leave the building, but why did your code get here!\n");
 	return 0;
 }
