@@ -44,7 +44,7 @@ int mutex_create_swi(void)
     int index = 0;
     int retVal = 0;
     while((gtMutex[index].bAvailable != TRUE) && (index < OS_NUM_MUTEX)){
-      //  printf("index %d not avai\n",index);
+        printf("index %d not avai\n",index);
         index++;
     }
     if(index == OS_NUM_MUTEX){
@@ -82,19 +82,19 @@ int mutex_lock(int mutex  __attribute__((unused)))
         }else{
             //need to put the task to the sleep queue
             tcb_t *temp_tcb;
-            cur_tcb->sleep_queue = NULL;
+            cur_tcb->mutex_sleep_queue = NULL;
             cur_tcb->pending = 1;
-            temp_tcb = cur_holding_tcb->sleep_queue;
+            temp_tcb = cur_holding_tcb->mutex_sleep_queue;
             if(!temp_tcb){
                 //null queue
-              	printf("cur holding tcb %d, no sleeo queue\n",cur_tcb);
-                cur_holding_tcb->sleep_queue = cur_tcb;
+                printf("cur holding tcb %d, no sleeo queue\n",cur_tcb);
+                cur_holding_tcb->mutex_sleep_queue = cur_tcb;
             }else{
-                while(temp_tcb->sleep_queue){
-                    temp_tcb = temp_tcb->sleep_queue;
+                while(temp_tcb->mutex_sleep_queue){
+                    temp_tcb = temp_tcb->mutex_sleep_queue;
                 }
                 printf("cur holding tcb %d, have sleep queue, add cur tcb %d\ni", temp_tcb, cur_tcb);
-                temp_tcb->sleep_queue = cur_tcb;
+                temp_tcb->mutex_sleep_queue = cur_tcb;
             }
         }
         dispatch_sleep();
@@ -139,8 +139,8 @@ int mutex_unlock(int mutex  __attribute__((unused)))
     if(first_tcb_in_queue){
         printf("cur prio %d, next in queue %d\n",cur_tcb->cur_prio,first_tcb_in_queue->cur_prio);
         //move this task to the run queue
-        gtMutex[mutex].pSleep_queue = first_tcb_in_queue->sleep_queue;
-        first_tcb_in_queue->sleep_queue = NULL;
+        gtMutex[mutex].pSleep_queue = first_tcb_in_queue->mutex_sleep_queue;
+        first_tcb_in_queue->mutex_sleep_queue = NULL;
         first_tcb_in_queue->pending = 0;
         runqueue_add(first_tcb_in_queue,first_tcb_in_queue->cur_prio);
     }else{
