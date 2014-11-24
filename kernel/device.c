@@ -99,14 +99,17 @@ void dev_update(unsigned long millis __attribute__((unused)))
 	        if (devices[i].next_match <= millis) {
         		devices[i].next_match += dev_freq[i];
             		tcb_t* sleep_queue = devices[i].sleep_q;
+			
             		if (sleep_queue != 0) {
+				printf("dev_queue %d\n", sleep_queue);
 				flag = TRUE;
                			 while(sleep_queue != 0) {
-					//printf("dev_update wake up %d\n", sleep_queue->native_prio);
+					printf("dev_update wake up %d\n", sleep_queue->native_prio);
 				    	runqueue_add(sleep_queue,sleep_queue->native_prio);
 				   	sleep_queue = sleep_queue->sleep_queue;
 				 }
               			 devices[i].sleep_q = 0;
+		
            		 }
 		}
 	}
