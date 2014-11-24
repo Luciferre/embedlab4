@@ -71,8 +71,8 @@ int mutex_lock(int mutex  __attribute__((unused)))
         enable_interrupts();
         return EINVAL;
     }
+    cur_tcb = get_cur_tcb();
     if(gtMutex[mutex].bLock == TRUE){
-        cur_tcb = get_cur_tcb();
         cur_holding_tcb = gtMutex[mutex].pHolding_Tcb;
         if(cur_tcb == cur_holding_tcb){
         printf("mutex lock twice %d\n",mutex);
@@ -92,6 +92,7 @@ int mutex_lock(int mutex  __attribute__((unused)))
                 while(temp_tcb->sleep_queue){
                     temp_tcb = temp_tcb->sleep_queue;
                 }
+                printf("cur holding tcb %d, have sleep queue, add cur tcb %d\n, temp_tcb, cur_tcb");
                 temp_tcb->sleep_queue = cur_tcb;
             }
         }
@@ -120,6 +121,7 @@ int mutex_unlock(int mutex  __attribute__((unused)))
     cur_tcb = get_cur_tcb();
     holding_tcb = gtMutex[mutex].pHolding_Tcb;
     //sanity check
+    printf("cur_tcb %d, holding tcb %d\n",cur_tcb,holding_tcb);
     if(cur_tcb == NULL){
         panic("cur_tcb is null");
     }
