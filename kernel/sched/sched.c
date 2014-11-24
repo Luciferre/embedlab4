@@ -57,11 +57,12 @@ void allocate_tasks(task_t** tasks  __attribute__((unused)), size_t num_tasks  _
 	runqueue_init();
 	for(i = 0; i < num_tasks; i++)
 	{
-		
+
 		system_tcb[i+1].native_prio = i+1;
 		system_tcb[i+1].context.r4 = (uint32_t)tasks[i]->lambda;
 		system_tcb[i+1].context.r5 = (uint32_t)tasks[i]->data;
 		system_tcb[i+1].context.r6 = (uint32_t)tasks[i]->stack_pos;
+        system_tcb[i+1].context.r7 = (void *)system_tcb[i+1].kstack_high;
 		system_tcb[i+1].context.sp = (void *)system_tcb[i+1].kstack_high;
 		system_tcb[i+1].context.lr = launch_task;
 		system_tcb[i+1].context.r8 = global_data;
@@ -77,6 +78,7 @@ void allocate_tasks(task_t** tasks  __attribute__((unused)), size_t num_tasks  _
    	system_tcb[63].context.r4 = (uint32_t) &idle;
    	system_tcb[63].context.r5 = 0;
   	system_tcb[63].context.r6 = (uint32_t)&idle_stack[0] ;
+    system_tcb[63].context.r7 = (void *)system_tcb[63].kstack_high;
   	system_tcb[63].context.sp = system_tcb[63].kstack_high[0];
 	system_tcb[63].context.lr = &launch_task;
 	system_tcb[63].context.r8 = global_data;

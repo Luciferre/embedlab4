@@ -26,6 +26,7 @@
  * Upon completion, we should be in user mode.
  */
 FUNC(launch_task)
+    mov     sp, r7
 	mov     r0, r5
 	mov     r1, #0
 	mov     r2, #0
