@@ -43,7 +43,7 @@ void C_SWI_Handler(unsigned num, unsigned* regs)
 		   	break;
 		case MUTEX_CREATE:
 			printf("MUTEX_CREATE_swi\n");
-			mutex_create();
+			mutex_create_swi();
 			break;
        	 	case MUTEX_LOCK:
 			printf("MUTEX_LOCK_swi %d\n", regs[0]);
