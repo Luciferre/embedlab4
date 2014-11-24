@@ -86,6 +86,7 @@ int mutex_lock(int mutex  __attribute__((unused)))
             temp_tcb = cur_holding_tcb->sleep_queue;
             if(!temp_tcb){
                 //null queue
+                printf("cur holding tcb %d, no sleeo queue\n",cur_tcb);
                 cur_holding_tcb->sleep_queue = cur_tcb;
             }else{
                 while(temp_tcb->sleep_queue){
