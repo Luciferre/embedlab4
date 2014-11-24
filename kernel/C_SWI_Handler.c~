@@ -47,7 +47,7 @@ void C_SWI_Handler(unsigned num, unsigned* regs)
 			break;
        	 	case MUTEX_LOCK:
 			printf("MUTEX_LOCK_swi %d\n", regs[0]);
-			mutex_lock((unsiged int) regs[0]);
+			mutex_lock((unsigned int) regs[0]);
 			break;
         	case MUTEX_UNLOCK:
 			printf("MUTEX_UNLOCK_swi %d\n", regs[0]);

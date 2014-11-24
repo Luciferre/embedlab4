@@ -43,15 +43,15 @@ void C_SWI_Handler(unsigned num, unsigned* regs)
 		   	break;
 		case MUTEX_CREATE:
 			printf("MUTEX_CREATE_swi\n");
-			mutex_create();
+			regs[0] = mutex_create();
 			break;
        	 	case MUTEX_LOCK:
 			printf("MUTEX_LOCK_swi %d\n", regs[0]);
-			mutex_lock((unsigned int) regs[0]);
+			regs[0] = mutex_lock((unsigned int) regs[0]);
 			break;
         	case MUTEX_UNLOCK:
 			printf("MUTEX_UNLOCK_swi %d\n", regs[0]);
-			mutex_unlock((int) regs[0]);
+			regs[0] =mutex_unlock((int) regs[0]);
 			break;
 		default:
 			//puts("instruction is unrecognized\n");
