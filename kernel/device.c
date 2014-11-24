@@ -18,12 +18,12 @@
 
 /**
  * @brief Fake device maintainence structure.
- * Since our tasks are periodic, we can represent 
- * tasks with logical devices. 
- * These logical devices should be signalled periodically 
+ * Since our tasks are periodic, we can represent
+ * tasks with logical devices.
+ * These logical devices should be signalled periodically
  * so that you can instantiate a new job every time period.
- * Devices are signaled by calling dev_update 
- * on every timer interrupt. In dev_update check if it is 
+ * Devices are signaled by calling dev_update
+ * on every timer interrupt. In dev_update check if it is
  * time to create a tasks new job. If so, make the task runnable.
  * There is a wait queue for every device which contains the tcbs of
  * all tasks waiting on the device event to occur.
@@ -49,9 +49,8 @@ void dev_init(void)
 	for (i = 0; i < NUM_DEVICES; i++) {
         	devices[i].sleep_q = 0;
         	devices[i].next_match = dev_freq[i];
-    	} 
+    	}
 }
-
 
 /**
  * @brief Puts a task to sleep on the sleep queue until the next
@@ -60,7 +59,7 @@ void dev_init(void)
  * @param dev  Device number.
  */
 void dev_wait(unsigned int dev __attribute__((unused)))
-{ 
+{
   	tcb_t* cur_tcb = get_cur_tcb();
  	tcb_t* sleep_queue = devices[dev].sleep_q;
   	if(sleep_queue == 0)
@@ -75,21 +74,21 @@ void dev_wait(unsigned int dev __attribute__((unused)))
 		sleep_queue = sleep_queue-> sleep_queue;
 		sleep_queue -> sleep_queue =0;
 	}
-  
+
   	dispatch_sleep();
 }
 
-
 /**
- * @brief Signals the occurrence of an event on all applicable devices. 
- * This function should be called on timer interrupts to determine that 
- * the interrupt corresponds to the event frequency of a device. If the 
- * interrupt corresponded to the interrupt frequency of a device, this 
- * function should ensure that the task is made ready to run 
+ * @brief Signals the occurrence of an event on all applicable devices.
+ * This function should be called on timer interrupts to determine that
+ * the interrupt corresponds to the event frequency of a device. If the
+ * interrupt corresponded to the interrupt frequency of a device, this
+ * function should ensure that the task is made ready to run
  */
 void dev_update(unsigned long millis __attribute__((unused)))
 {
-	int i = 0;	
+    printf("dev update");
+	int i = 0;
 	for (i = 0; i < NUM_DEVICES; i++) {
 	        if (devices[i].next_match == millis) {
         		devices[i].next_match += dev_freq[i];
@@ -102,8 +101,7 @@ void dev_update(unsigned long millis __attribute__((unused)))
               			 devices[i].sleep_q = 0;
            	    		 dispatch_save();
            		 }
-		}  
+		}
 	}
 
 }
-

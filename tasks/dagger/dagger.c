@@ -21,7 +21,7 @@ void fun1(void* str)
 {
 	while(1)
 	{
-        printf("task1 str %d\n",(int)str);
+        //printf("task1 str %d\n",(int)str);
 		putchar((int)str);
 		if (event_wait(0) < 0)
 			panic("Dev 0 failed");
@@ -32,7 +32,7 @@ void fun2(void* str)
 {
 	while(1)
 	{
-        printf("task2 str %d\n",(int)str);
+        //printf("task2 str %d\n",(int)str);
 		putchar((int)str);
 		if (event_wait(1) < 0)
 			panic("Dev 1 failed");
@@ -44,7 +44,7 @@ int main(int argc, char** argv)
 	task_t tasks[2];
 	tasks[0].lambda = fun1;
 	tasks[0].data = (void*)'@';
-	tasks[0].stack_pos = (void*)0xa2000000;
+	tasks[0].stack_pos = (void*)0xa1020000;
 	tasks[0].C = 1;
 	tasks[0].T = PERIOD_DEV0;
 	tasks[1].lambda = fun2;
