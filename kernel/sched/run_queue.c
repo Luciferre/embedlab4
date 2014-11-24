@@ -87,7 +87,7 @@ void runqueue_add(tcb_t* tcb  __attribute__((unused)), uint8_t prio  __attribute
 		run_list[prio] = tcb;
 	}
 	printf("add %d\n", prio);
-	printf("group_run_bits = %x, run_bits = %x\n", group_run_bits, run_bits[OSTCBY]);
+	//printf("group_run_bits = %x, run_bits = %x\n", group_run_bits, run_bits[OSTCBY]);
 }
 
 
@@ -105,12 +105,13 @@ tcb_t* runqueue_remove(uint8_t prio  __attribute__((unused)))
 
 	tcb_t* removed_tcb = run_list[prio];
 	run_list[prio] = 0;
-
+	
         run_bits[OSTCBY] = run_bits[OSTCBY] & ~(0x1 << OSTCBX);
 	if(run_bits[OSTCBY] == 0)
         	group_run_bits = group_run_bits & ~(0x1 << OSTCBY);
 	printf("remove %d\n",prio);
-	printf("group_run_bits = %x, run_bits = %x\n", group_run_bits, run_bits[OSTCBY]);
+	printf("r4:%d	r5:%d	r6:%d	r7:%d\n",removed_tcb->context.r4,removed_tcb->context.r5,removed_tcb->context.r6, removed_tcb->context.r7);
+	//printf("group_run_bits = %x, run_bits = %x\n", group_run_bits, run_bits[OSTCBY]);
 	return removed_tcb;
 }
 

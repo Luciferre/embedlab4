@@ -92,12 +92,12 @@ void dev_wait(unsigned int dev __attribute__((unused)))
  */
 void dev_update(unsigned long millis __attribute__((unused)))
 {
-    printf("dev update\n");
+    //printf("dev update\n");
 	disable_interrupts();
 	int i = 0;
 	bool_e flag = FALSE;
 	for (i = 0; i < NUM_DEVICES; i++) {
-	        if (devices[i].next_match == millis) {
+	        if (devices[i].next_match <= millis) {
         		devices[i].next_match += dev_freq[i];
             		tcb_t* sleep_queue = devices[i].sleep_q;
             		if (sleep_queue != 0) {

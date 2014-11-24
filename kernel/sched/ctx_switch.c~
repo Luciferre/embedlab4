@@ -1,11 +1,10 @@
 /** @file ctx_switch.c
- * 
+ *
  * @brief C wrappers around assembly context switch routines.
  *
  * @author Kartik Subramanian <ksubrama@andrew.cmu.edu>
  * @date 2008-11-21
  */
- 
 
 #include <types.h>
 #include <assert.h>
@@ -31,9 +30,8 @@ void dispatch_init(tcb_t* idle __attribute__((unused)))
 	cur_tcb = idle;
 }
 
-
 /**
- * @brief Context switch to the highest priority task while saving off the 
+ * @brief Context switch to the highest priority task while saving off the
  * current task state.
  *
  * This function needs to be externally synchronized.
@@ -42,10 +40,9 @@ void dispatch_init(tcb_t* idle __attribute__((unused)))
  */
 void dispatch_save(void)
 {
-	//disable_interrupts();
-	printf("dispatch save\n");
 	tcb_t *last_tcb = cur_tcb;
 	uint8_t prio = highest_prio();
+	printf("dispatch save %d\n",prio);
 	cur_tcb = runqueue_remove(prio);
 	runqueue_add(last_tcb, last_tcb->native_prio);
 	printf("context switch from %d to %d \n", last_tcb->native_prio, cur_tcb->native_prio);
@@ -54,24 +51,23 @@ void dispatch_save(void)
 }
 
 /**
- * @brief Context switch to the highest priority task that is not this task -- 
+ * @brief Context switch to the highest priority task that is not this task --
  * don't save the current task state.
  *
  * There is always an idle task to switch to.
  */
 void dispatch_nosave(void)
 {
-	
-	printf("dispatch nosave\n");
     	uint8_t prio = highest_prio();
+         printf("dispatch nosave,prio %d\n",prio);
 	cur_tcb = runqueue_remove(prio);
+	printf("context switch to %d \n", cur_tcb->native_prio);
    	ctx_switch_half(&(cur_tcb->context)) ;
-  
+
 }
 
-
 /**
- * @brief Context switch to the highest priority task that is not this task -- 
+ * @brief Context switch to the highest priority task that is not this task --
  * and save the current task but don't mark is runnable.
  *
  * There is always an idle task to switch to.
@@ -82,8 +78,9 @@ void dispatch_sleep(void)
 	printf("dispatch sleep\n");
 	tcb_t *last_tcb = cur_tcb;
 	uint8_t prio = highest_prio();
+	//printf("dispatch sleep %d\n",prio);
 	cur_tcb = runqueue_remove(prio);
-	printf("context switch from %d to %d \n", cur_tcb->native_prio, last_tcb->native_prio);
+	printf("context switch from %d to %d \n", last_tcb->native_prio, cur_tcb->native_prio);
     	ctx_switch_full(&(cur_tcb->context),&(last_tcb->context)) ;
 
 }
