@@ -44,6 +44,7 @@ int mutex_create(void)
     int index = 0;
     int retVal = 0;
     while((gtMutex[index].bAvailable != TRUE) && (index < OS_NUM_MUTEX)){
+        printf("index %d not avai\n",index);
         index++;
     }
     if(index == OS_NUM_MUTEX){
