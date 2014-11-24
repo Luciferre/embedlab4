@@ -30,12 +30,12 @@
 /* Read count bytes (or less) from fd into the buffer buf. */
 ssize_t read_syscall(int fd __attribute__((unused)), void *buf __attribute__((unused)), size_t count __attribute__((unused)))
 {
-	unsigned i;	
+	unsigned i;
 	char *buffer = (char*) buf;
 	char tmp;
-	
-	if(fd != STDIN_FILENO) 
-		return -EBADF;   
+
+	if(fd != STDIN_FILENO)
+		return -EBADF;
 
 	if((count > (SDRAMEnd - SDRAMStart)) || (buf < (void*)SDRAMStart) || (buf > (void*)SDRAMEnd))
 		return -EFAULT;
@@ -62,31 +62,34 @@ ssize_t read_syscall(int fd __attribute__((unused)), void *buf __attribute__((un
 			putc(tmp);
 		}
 	}
-	
+
 	return count;
-	
+
 }
 
 /* Write count bytes to fd from the buffer buf. */
 ssize_t write_syscall(int fd  __attribute__((unused)), const void *buf  __attribute__((unused)), size_t count  __attribute__((unused)))
 {
-
+    printf("count %d\n",(int)count);
   	unsigned i;
 	char *buffer = (char *) buf;
-
+    char test[count+1];
+    for(i=0;i<count;i++)
+        test[i] = buffer[i];
+    printf("%s\n",test);
 	if(fd != STDOUT_FILENO)
-	{	
+	{
 		return -EBADF;
 	}
 	if(( (((unsigned)buf >ROMEnd)&&((unsigned)buf < SDRAMStart)) || ((unsigned)buf > SDRAMEnd) || ( (((unsigned)buf + count) > ROMEnd)&&(((unsigned)buf + count) < SDRAMStart)) ) || (((unsigned)buf + count) > SDRAMEnd))
 	{
 		return -EFAULT;
-	}	
+	}
 	for( i = 0; i < count; i++)
 	{
+
 		putc(buffer[i]);
 	}
 	return count;
-	
-}
 
+}

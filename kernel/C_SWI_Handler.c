@@ -21,6 +21,7 @@ void C_SWI_Handler(unsigned num, unsigned* regs)
 			break;
 		//write
 		case WRITE_SWI:
+            printf("swi handler write\n");
 			regs[0] = write_syscall((int)regs[0], (void *)regs[1], (size_t)regs[2]);
 			break;
 		case TIME_SWI:

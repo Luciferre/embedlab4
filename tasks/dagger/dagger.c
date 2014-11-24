@@ -11,7 +11,6 @@
 #include <task.h>
 #include <unistd.h>
 
-
 void panic(const char* str)
 {
 	puts(str);
@@ -22,6 +21,7 @@ void fun1(void* str)
 {
 	while(1)
 	{
+        printf("task1 str %d\n",(int)str);
 		putchar((int)str);
 		if (event_wait(0) < 0)
 			panic("Dev 0 failed");
@@ -32,6 +32,7 @@ void fun2(void* str)
 {
 	while(1)
 	{
+        printf("task2 str %d\n",(int)str);
 		putchar((int)str);
 		if (event_wait(1) < 0)
 			panic("Dev 1 failed");
