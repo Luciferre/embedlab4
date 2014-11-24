@@ -11,10 +11,10 @@
 	.global S_Handler
 	.global C_SWI_Handler
 S_Handler:
-	SUB	sp, sp, #4		@leave room on stack for SPSR
-	STMFD	sp!, {r0-r12, lr}	@store user's gp registers
     stmfd    sp, {r0, sp, lr}^
     add      sp, sp, #-12
+	SUB	sp, sp, #4		@leave room on stack for SPSR
+	STMFD	sp!, {r0-r12, lr}	@store user's gp registers
 	mrs     r4, cpsr
     eor     r4, r4, #0x80
     msr     cpsr, r4
@@ -30,8 +30,8 @@ S_Handler:
 	BL	C_SWI_Handler		@goto handler (see pœsp!ârev lecture)
 	LDR	r2, [sp, #14*4]		@restore SPSR (NOT â
 	MSR	spsr, r2		@restore SPSR from r2
-    ldmfd    sp, {r0, sp, lr}^
-    add      sp, sp, #12
 	LDMFD	sp!, {r0-r12, lr}	@unstack user's registers
 	ADD	sp, sp, #4		@remove space used to store SPSR
+    ldmfd    sp, {r0, sp, lr}^
+    add      sp, sp, #12
 	MOVS	pc, lr			@return from handler

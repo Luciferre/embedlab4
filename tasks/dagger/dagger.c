@@ -45,7 +45,7 @@ int main(int argc, char** argv)
 	task_t tasks[1];
 	tasks[0].lambda = fun1;
 	tasks[0].data = (void*)'@';
-	tasks[0].stack_pos = (void*)0xa1020000;
+	tasks[0].stack_pos = (void*)0xa2000000;
 	tasks[0].C = 1;
 	tasks[0].T = PERIOD_DEV0;
 	//tasks[1].lambda = fun2;
