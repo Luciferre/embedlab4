@@ -83,6 +83,7 @@ ssize_t write_syscall(int fd  __attribute__((unused)), const void *buf  __attrib
 	}
 	if(( (((unsigned)buf >ROMEnd)&&((unsigned)buf < SDRAMStart)) || ((unsigned)buf > SDRAMEnd) || ( (((unsigned)buf + count) > ROMEnd)&&(((unsigned)buf + count) < SDRAMStart)) ) || (((unsigned)buf + count) > SDRAMEnd))
 	{
+		printf("EFAULT");
 		return -EFAULT;
 	}
 	for( i = 0; i < count; i++)

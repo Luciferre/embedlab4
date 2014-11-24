@@ -11,7 +11,6 @@
 #include <bits/swi.h>
 #include <syscall.h>
 
-
 void C_SWI_Handler(unsigned num, unsigned* regs)
 {
 	switch(num)
