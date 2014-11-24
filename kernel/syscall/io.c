@@ -70,20 +70,20 @@ ssize_t read_syscall(int fd __attribute__((unused)), void *buf __attribute__((un
 /* Write count bytes to fd from the buffer buf. */
 ssize_t write_syscall(int fd  __attribute__((unused)), const void *buf  __attribute__((unused)), size_t count  __attribute__((unused)))
 {
-    printf("count %d\n",(int)count);
+    //printf("count %d\n",(int)count);
   	unsigned i;
 	char *buffer = (char *) buf;
-    char test[count+1];
-    for(i=0;i<count;i++)
-        test[i] = buffer[i];
-    printf("%s\n",test);
+   // char test[count+1];
+   // for(i=0;i<count;i++)
+     //   test[i] = buffer[i];
+    //printf("%s\n",test);
 	if(fd != STDOUT_FILENO)
 	{
 		return -EBADF;
 	}
 	if(( (((unsigned)buf >ROMEnd)&&((unsigned)buf < SDRAMStart)) || ((unsigned)buf > SDRAMEnd) || ( (((unsigned)buf + count) > ROMEnd)&&(((unsigned)buf + count) < SDRAMStart)) ) || (((unsigned)buf + count) > SDRAMEnd))
 	{
-		printf("EFAULT");
+		//printf("EFAULT");
 		return -EFAULT;
 	}
 	for( i = 0; i < count; i++)
