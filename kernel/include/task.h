@@ -62,6 +62,7 @@ struct tcb
 	                     __attribute__((aligned(8)));
 	uint32_t         kstack_high[0];
 	int 		 pending;
+	volatile struct tcb* mutex_sleep_queue; 
 };
 typedef volatile struct tcb tcb_t;
 

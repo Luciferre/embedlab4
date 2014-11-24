@@ -70,6 +70,7 @@ void allocate_tasks(task_t** tasks  __attribute__((unused)), size_t num_tasks  _
 		//printf("task r4:%x	r5:%d	r6:%x\n",(*tasks)[i].lambda,(*tasks)[i].data,(*tasks)[i].stack_pos);
 		system_tcb[i+1].holds_lock = 0;
 		system_tcb[i+1].sleep_queue = 0;
+		system_tcb[i+1].mutex_sleep_queue = 0;
 		system_tcb[i+1].pending = 0;
 		//system_tcb[i].kstack[0] = (uint32_t)tasks[i]->stack_pos;//how to initialize?
 		//system_tcb[i].kstack_high[0] = system_tcb[i].kstack[0] + OS_KSTACK_SIZE/sizeof(uint32_t); // how to initialize?
@@ -87,6 +88,7 @@ void allocate_tasks(task_t** tasks  __attribute__((unused)), size_t num_tasks  _
 	system_tcb[63].context.r8 = global_data;
 	system_tcb[63].holds_lock = 0;
 	system_tcb[63].sleep_queue = 0;
+	system_tcb[63].mutex_sleep_queue = 0;
 	system_tcb[63].pending = 0;
 	//system_tcb[63].kstack[0] = (uint32_t) &idle_stack[0];//idle stack is useful?
 	runqueue_add(&system_tcb[63], 63);
