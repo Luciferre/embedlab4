@@ -93,7 +93,6 @@ void dev_wait(unsigned int dev __attribute__((unused)))
 void dev_update(unsigned long millis __attribute__((unused)))
 {
     printf("dev update");
-	int i = 0;
 	disable_interrupts();
 	int i = 0;
 	bool_e flag = FALSE;

@@ -57,7 +57,6 @@ void allocate_tasks(task_t** tasks  __attribute__((unused)), size_t num_tasks  _
 	runqueue_init();
 	for(i = 0; i < num_tasks; i++)
 	{
-<<<<<<< HEAD
 		system_tcb[i].native_prio = i;
   	    system_tcb[i].context.r6 = (uint32_t)tasks[i]->stack_pos;
 		system_tcb[i].context.r4 = (uint32_t)tasks[i]->lambda;
@@ -69,43 +68,31 @@ void allocate_tasks(task_t** tasks  __attribute__((unused)), size_t num_tasks  _
 		//system_tcb[i].kstack[0] = (uint32_t)tasks[i]->stack_pos;//how to initialize?
 
 		runqueue_add(&system_tcb[i], i);
-=======
 		system_tcb[i+1].native_prio = i+1;
 		system_tcb[i+1].context.r4 = (uint32_t)tasks[i]->lambda;
 		system_tcb[i+1].context.r5 = (uint32_t)tasks[i]->data;
 		system_tcb[i+1].context.r6 = (uint32_t)tasks[i]->stack_pos;
 		system_tcb[i+1].context.sp = (void *)system_tcb[i+1].kstack_high;
 		system_tcb[i+1].context.lr = launch_task;
-		system_tcb[i+1].context.r8 = global_data; 
+		system_tcb[i+1].context.r8 = global_data;
 		system_tcb[i+1].holds_lock = 0;
 		system_tcb[i+1].sleep_queue = 0;
 		//system_tcb[i].kstack[0] = (uint32_t)tasks[i]->stack_pos;//how to initialize?
 		//system_tcb[i].kstack_high[0] = system_tcb[i].kstack[0] + OS_KSTACK_SIZE/sizeof(uint32_t); // how to initialize?
-	
+
 		runqueue_add(&system_tcb[i+1], i+1);
->>>>>>> master
 	}
 
 	system_tcb[63].native_prio = 63;
    	system_tcb[63].context.r4 = (uint32_t) &idle;
    	system_tcb[63].context.r5 = 0;
-<<<<<<< HEAD
   	system_tcb[63].context.r6 = (uint32_t)&idle_stack[0] ;
   	system_tcb[63].context.sp = system_tcb[63].kstack_high[0];
 	system_tcb[63].context.lr = &launch_task;
-=======
-  	system_tcb[63].context.r6 = (uint32_t) &idle_stack[0] ;
-  	system_tcb[63].context.sp = (void *)system_tcb[63].kstack_high;
-	system_tcb[63].context.lr = launch_task;
-	system_tcb[i+1].context.r8 = global_data; 
->>>>>>> master
+	system_tcb[63].context.r8 = global_data;
 	system_tcb[63].holds_lock = 0;
 	system_tcb[63].sleep_queue = 0;
 	//system_tcb[63].kstack[0] = (uint32_t) &idle_stack[0];//idle stack is useful?
-<<<<<<< HEAD
-=======
-  	//system_tcb[63].kstack_high[0] = system_tcb[63].kstack[0] + OS_KSTACK_SIZE/sizeof(uint32_t);//how to initialize?
->>>>>>> master
 	runqueue_add(&system_tcb[63], 63);
 	//dispatch_init(&system_tcb[63]);
 	dispatch_nosave();
