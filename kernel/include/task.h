@@ -61,6 +61,7 @@ struct tcb
 	uint32_t         kstack[OS_KSTACK_SIZE/sizeof(uint32_t)] 
 	                     __attribute__((aligned(8)));
 	uint32_t         kstack_high[0];
+	int 		 pending;
 };
 typedef volatile struct tcb tcb_t;
 

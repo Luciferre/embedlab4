@@ -92,7 +92,6 @@ void dev_wait(unsigned int dev __attribute__((unused)))
  */
 void dev_update(unsigned long millis __attribute__((unused)))
 {
-    //printf("dev update\n");
 	disable_interrupts();
 	int i = 0;
 	bool_e flag = FALSE;
@@ -103,7 +102,7 @@ void dev_update(unsigned long millis __attribute__((unused)))
             		if (sleep_queue != 0) {
 				flag = TRUE;
                			 while(sleep_queue != 0) {
-					printf("dev_update wake up %d\n", sleep_queue->native_prio);
+					//printf("dev_update wake up %d\n", sleep_queue->native_prio);
 				    	runqueue_add(sleep_queue,sleep_queue->native_prio);
 				   	sleep_queue = sleep_queue->sleep_queue;
 				 }
