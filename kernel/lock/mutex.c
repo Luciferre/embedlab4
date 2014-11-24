@@ -83,6 +83,7 @@ int mutex_lock(int mutex  __attribute__((unused)))
             //need to put the task to the sleep queue
             tcb_t *temp_tcb;
             cur_tcb->sleep_queue = NULL;
+            cur_tcb->pending = 1;
             temp_tcb = cur_holding_tcb->sleep_queue;
             if(!temp_tcb){
                 //null queue
@@ -92,7 +93,7 @@ int mutex_lock(int mutex  __attribute__((unused)))
                 while(temp_tcb->sleep_queue){
                     temp_tcb = temp_tcb->sleep_queue;
                 }
-                printf("cur holding tcb %d, have sleep queue, add cur tcb %d\n, temp_tcb, cur_tcb");
+                printf("cur holding tcb %d, have sleep queue, add cur tcb %d\ni", temp_tcb, cur_tcb);
                 temp_tcb->sleep_queue = cur_tcb;
             }
         }
@@ -140,6 +141,7 @@ int mutex_unlock(int mutex  __attribute__((unused)))
         //move this task to the run queue
         gtMutex[mutex].pSleep_queue = first_tcb_in_queue->sleep_queue;
         first_tcb_in_queue->sleep_queue = NULL;
+        first_tcb_in_queue->pending = 0;
         runqueue_add(first_tcb_in_queue,first_tcb_in_queue->cur_prio);
     }else{
         //no task is waiting for this mutex
