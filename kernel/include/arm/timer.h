@@ -35,7 +35,7 @@
 #define OSTMR_OIER_E3         0x00000008   /* Enable match 3 */
 
 #define OSTMR_FREQ            3686400      /* Oscillator frequency in hz */
-#define OSTMR_COUNT           32500
+#define OSTMR_COUNT           32500000//32500
 #define TIMER_RESOLUTION      10  /*10ms resolution*/
 #ifndef ASSEMBLER
 
