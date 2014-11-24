@@ -42,6 +42,7 @@ int task_create(task_t* tasks  __attribute__((unused)), size_t num_tasks  __attr
 	if(!assign_schedule(&tasks, num_tasks))//ub_test
 		return ESCHED;
 
+	disable_interrupts();
 	allocate_tasks(&tasks, num_tasks);
 
   return 1; /* remove this line after adding your code */

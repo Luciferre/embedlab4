@@ -17,7 +17,7 @@ S_Handler:
     eor     r4, r4, #0x80
     msr     cpsr, r4
 
-	ldr     r3, =r8
+	ldr     r3, =global_data
     ldr     r8, [r3]
 
 	MRS	r2, spsr		@get SPSR into gp registers

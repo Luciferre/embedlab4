@@ -58,6 +58,7 @@ static uint8_t prio_unmap_table[]  __attribute__((unused)) =
  */
 void runqueue_init(void)
 {
+	printf("run_queue_init\n");
 	int i;
 	for (i = 0; i < OS_MAX_TASKS; i ++) {
         	run_list[i] = 0;
@@ -85,7 +86,7 @@ void runqueue_add(tcb_t* tcb  __attribute__((unused)), uint8_t prio  __attribute
 	if(run_list[prio] == 0){
 		run_list[prio] = tcb;
 	}
-	printf("add\n");
+	printf("add %d\n", prio);
 	printf("group_run_bits = %x, run_bits = %x\n", group_run_bits, run_bits[OSTCBY]);
 }
 
@@ -108,7 +109,7 @@ tcb_t* runqueue_remove(uint8_t prio  __attribute__((unused)))
         run_bits[OSTCBY] = run_bits[OSTCBY] & ~(0x1 << OSTCBX);
 	if(run_bits[OSTCBY] == 0)
         	group_run_bits = group_run_bits & ~(0x1 << OSTCBY);
-	printf("remove\n");
+	printf("remove %d\n",prio);
 	printf("group_run_bits = %x, run_bits = %x\n", group_run_bits, run_bits[OSTCBY]);
 	return removed_tcb;
 }

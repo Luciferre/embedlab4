@@ -44,6 +44,9 @@ FUNC(launch_task)
 FUNC(ctx_switch_full)
 	stmia r1,{r4-r11,sp,lr}
    	ldmfd r0,{r4-r11,sp,lr}
+	stmfd sp!, {lr}
+ 	bl enable_int
+	ldmfd sp!, {lr}
   	mov pc, lr
 
 /*add your code to perform a half context switch */	
