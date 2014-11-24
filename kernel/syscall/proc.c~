@@ -39,8 +39,8 @@ int task_create(task_t* tasks  __attribute__((unused)), size_t num_tasks  __attr
 		if(tasks[i].T < tasks[i].C || tasks[i].T == 0)
 			return ESCHED;
 	}
-	//if(!assign_schedule(&tasks, num_tasks))//ub_test
-	//	return ESCHED;
+	if(!assign_schedule(&tasks, num_tasks))//ub_test
+		return ESCHED;
 
 	disable_interrupts();
 	allocate_tasks(&tasks, num_tasks);
