@@ -1,0 +1,94 @@
+
+sched.o:     file format elf32-littlearm
+
+Disassembly of section .text:
+
+00000000 <sched_init>:
+   0:	e12fff1e 	bx	lr
+
+00000004 <idle>:
+   4:	e10f3000 	mrs	r3, CPSR
+   8:	e3c330c0 	bic	r3, r3, #192	; 0xc0
+   c:	e121f003 	msr	CPSR_c, r3
+  10:	eafffffe 	b	10 <idle+0xc>
+
+00000014 <allocate_tasks>:
+  14:	e92d4ef0 	stmdb	sp!, {r4, r5, r6, r7, r9, sl, fp, lr}
+  18:	e24dd004 	sub	sp, sp, #4	; 0x4
+  1c:	e58d0000 	str	r0, [sp]
+  20:	e1a0b001 	mov	fp, r1
+  24:	ebfffffe 	bl	0 <dev_init>
+  28:	ebfffffe 	bl	0 <runqueue_init>
+  2c:	e3a05000 	mov	r5, #0	; 0x0
+  30:	e1a07005 	mov	r7, r5
+  34:	e1a06005 	mov	r6, r5
+  38:	ea000011 	b	84 <allocate_tasks+0x70>
+  3c:	e7c32004 	strb	r2, [r3, r4]
+  40:	e59d2000 	ldr	r2, [sp]
+  44:	e7973002 	ldr	r3, [r7, r2]
+  48:	e2877004 	add	r7, r7, #4	; 0x4
+  4c:	e9931004 	ldmib	r3, {r2, ip}
+  50:	e5933000 	ldr	r3, [r3]
+  54:	e58e3004 	str	r3, [lr, #4]
+  58:	e59f30d4 	ldr	r3, [pc, #212]	; 134 <.text+0x134>
+  5c:	e58e2008 	str	r2, [lr, #8]
+  60:	e58ec00c 	str	ip, [lr, #12]
+  64:	e58ec024 	str	ip, [lr, #36]
+  68:	e58e3028 	str	r3, [lr, #40]
+  6c:	e58e902c 	str	r9, [lr, #44]
+  70:	e58e9030 	str	r9, [lr, #48]
+  74:	e59e3038 	ldr	r3, [lr, #56]
+  78:	e2833b01 	add	r3, r3, #1024	; 0x400
+  7c:	e78e300a 	str	r3, [lr, sl]
+  80:	ebfffffe 	bl	0 <runqueue_add>
+  84:	e59fa0ac 	ldr	sl, [pc, #172]	; 138 <.text+0x138>
+  88:	e59f00ac 	ldr	r0, [pc, #172]	; 13c <.text+0x13c>
+  8c:	e59f40ac 	ldr	r4, [pc, #172]	; 140 <.text+0x140>
+  90:	e0030a95 	mul	r3, r5, sl
+  94:	e2866a01 	add	r6, r6, #4096	; 0x1000
+  98:	e20520ff 	and	r2, r5, #255	; 0xff
+  9c:	e155000b 	cmp	r5, fp
+  a0:	e2866038 	add	r6, r6, #56	; 0x38
+  a4:	e3a09000 	mov	r9, #0	; 0x0
+  a8:	e1a01002 	mov	r1, r2
+  ac:	e0860000 	add	r0, r6, r0
+  b0:	e2855001 	add	r5, r5, #1	; 0x1
+  b4:	e083e004 	add	lr, r3, r4
+  b8:	1affffdf 	bne	3c <allocate_tasks+0x28>
+  bc:	e59f3080 	ldr	r3, [pc, #128]	; 144 <.text+0x144>
+  c0:	e59f2080 	ldr	r2, [pc, #128]	; 148 <.text+0x148>
+  c4:	e3a0103f 	mov	r1, #63	; 0x3f
+  c8:	e7c41003 	strb	r1, [r4, r3]
+  cc:	e59fc078 	ldr	ip, [pc, #120]	; 14c <.text+0x14c>
+  d0:	e2833004 	add	r3, r3, #4	; 0x4
+  d4:	e7842003 	str	r2, [r4, r3]
+  d8:	e2833004 	add	r3, r3, #4	; 0x4
+  dc:	e7849003 	str	r9, [r4, r3]
+  e0:	e59f204c 	ldr	r2, [pc, #76]	; 134 <.text+0x134>
+  e4:	e2833004 	add	r3, r3, #4	; 0x4
+  e8:	e784c003 	str	ip, [r4, r3]
+  ec:	e2833018 	add	r3, r3, #24	; 0x18
+  f0:	e784c003 	str	ip, [r4, r3]
+  f4:	e2833004 	add	r3, r3, #4	; 0x4
+  f8:	e7842003 	str	r2, [r4, r3]
+  fc:	e2833004 	add	r3, r3, #4	; 0x4
+ 100:	e7849003 	str	r9, [r4, r3]
+ 104:	e2833004 	add	r3, r3, #4	; 0x4
+ 108:	e7849003 	str	r9, [r4, r3]
+ 10c:	e2833008 	add	r3, r3, #8	; 0x8
+ 110:	e7942003 	ldr	r2, [r4, r3]
+ 114:	e59f0034 	ldr	r0, [pc, #52]	; 150 <.text+0x150>
+ 118:	e2833a01 	add	r3, r3, #4096	; 0x1000
+ 11c:	e2822b01 	add	r2, r2, #1024	; 0x400
+ 120:	e7842003 	str	r2, [r4, r3]
+ 124:	ebfffffe 	bl	0 <runqueue_add>
+ 128:	e28dd004 	add	sp, sp, #4	; 0x4
+ 12c:	e8bd4ef0 	ldmia	sp!, {r4, r5, r6, r7, r9, sl, fp, lr}
+ 130:	eafffffe 	b	0 <dispatch_nosave>
+ 134:	00000000 	andeq	r0, r0, r0
+ 138:	00001038 	andeq	r1, r0, r8, lsr r0
+ 13c:	ffffefc8 	undefined instruction 0xffffefc8
+ 140:	00000000 	andeq	r0, r0, r0
+ 144:	0003fdc8 	andeq	pc, r3, r8, asr #27
+	...
+ 150:	0003fdc8 	andeq	pc, r3, r8, asr #27

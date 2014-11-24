@@ -1,0 +1,82 @@
+
+ctx_switch.o:     file format elf32-littlearm
+
+Disassembly of section .text:
+
+00000000 <dispatch_init>:
+   0:	e59f3004 	ldr	r3, [pc, #4]	; c <.text+0xc>
+   4:	e5830000 	str	r0, [r3]
+   8:	e12fff1e 	bx	lr
+   c:	00000000 	andeq	r0, r0, r0
+
+00000010 <get_cur_prio>:
+  10:	e3a00001 	mov	r0, #1	; 0x1
+  14:	e12fff1e 	bx	lr
+
+00000018 <get_cur_tcb>:
+  18:	e59f3004 	ldr	r3, [pc, #4]	; 24 <.text+0x24>
+  1c:	e5930000 	ldr	r0, [r3]
+  20:	e12fff1e 	bx	lr
+  24:	00000000 	andeq	r0, r0, r0
+
+00000028 <dispatch_sleep>:
+  28:	e92d4030 	stmdb	sp!, {r4, r5, lr}
+  2c:	e10f3000 	mrs	r3, CPSR
+  30:	e38330c0 	orr	r3, r3, #192	; 0xc0
+  34:	e121f003 	msr	CPSR_c, r3
+  38:	e59f402c 	ldr	r4, [pc, #44]	; 6c <.text+0x6c>
+  3c:	e5945000 	ldr	r5, [r4]
+  40:	ebfffffe 	bl	0 <highest_prio>
+  44:	ebfffffe 	bl	0 <runqueue_remove>
+  48:	e2851004 	add	r1, r5, #4	; 0x4
+  4c:	e1a03000 	mov	r3, r0
+  50:	e2800004 	add	r0, r0, #4	; 0x4
+  54:	e5843000 	str	r3, [r4]
+  58:	ebfffffe 	bl	0 <ctx_switch_full>
+  5c:	e10f3000 	mrs	r3, CPSR
+  60:	e3c330c0 	bic	r3, r3, #192	; 0xc0
+  64:	e121f003 	msr	CPSR_c, r3
+  68:	e8bd8030 	ldmia	sp!, {r4, r5, pc}
+  6c:	00000000 	andeq	r0, r0, r0
+
+00000070 <dispatch_save>:
+  70:	e92d4030 	stmdb	sp!, {r4, r5, lr}
+  74:	e10f3000 	mrs	r3, CPSR
+  78:	e38330c0 	orr	r3, r3, #192	; 0xc0
+  7c:	e121f003 	msr	CPSR_c, r3
+  80:	e59f5040 	ldr	r5, [pc, #64]	; c8 <.text+0xc8>
+  84:	e59f0040 	ldr	r0, [pc, #64]	; cc <.text+0xcc>
+  88:	ebfffffe 	bl	0 <printf>
+  8c:	e5954000 	ldr	r4, [r5]
+  90:	ebfffffe 	bl	0 <highest_prio>
+  94:	ebfffffe 	bl	0 <runqueue_remove>
+  98:	e5d41000 	ldrb	r1, [r4]
+  9c:	e5850000 	str	r0, [r5]
+  a0:	e1a00004 	mov	r0, r4
+  a4:	ebfffffe 	bl	0 <runqueue_add>
+  a8:	e5950000 	ldr	r0, [r5]
+  ac:	e2841004 	add	r1, r4, #4	; 0x4
+  b0:	e2800004 	add	r0, r0, #4	; 0x4
+  b4:	ebfffffe 	bl	0 <ctx_switch_full>
+  b8:	e10f3000 	mrs	r3, CPSR
+  bc:	e3c330c0 	bic	r3, r3, #192	; 0xc0
+  c0:	e121f003 	msr	CPSR_c, r3
+  c4:	e8bd8030 	ldmia	sp!, {r4, r5, pc}
+	...
+
+000000d0 <dispatch_nosave>:
+  d0:	e52de004 	str	lr, [sp, #-4]!
+  d4:	e10f3000 	mrs	r3, CPSR
+  d8:	e38330c0 	orr	r3, r3, #192	; 0xc0
+  dc:	e121f003 	msr	CPSR_c, r3
+  e0:	e59f001c 	ldr	r0, [pc, #28]	; 104 <.text+0x104>
+  e4:	ebfffffe 	bl	0 <printf>
+  e8:	ebfffffe 	bl	0 <highest_prio>
+  ec:	ebfffffe 	bl	0 <runqueue_remove>
+  f0:	e59f3010 	ldr	r3, [pc, #16]	; 108 <.text+0x108>
+  f4:	e1a02000 	mov	r2, r0
+  f8:	e2800004 	add	r0, r0, #4	; 0x4
+  fc:	e5832000 	str	r2, [r3]
+ 100:	ebfffffe 	bl	0 <ctx_switch_half>
+ 104:	00000010 	andeq	r0, r0, r0, lsl r0
+ 108:	00000000 	andeq	r0, r0, r0
