@@ -11,11 +11,13 @@
 #include <bits/errno.h>
 #include <arm/timer.h>
 #include <syscall.h>
+#include <exports.h>
 
+extern volatile unsigned long system_time;
 
 unsigned long time_syscall(void)
 {
- return 1; /* remove this line after adding your code here */	
+	return system_time*((unsigned long)TIMER_RESOLUTION);
 }
 
 
@@ -28,5 +30,7 @@ unsigned long time_syscall(void)
  */
 void sleep_syscall(unsigned long millis  __attribute__((unused)))
 {
-	
+    unsigned long end_time = system_time + millis/10;
+    while (system_time < end_time);
+    return;
 }

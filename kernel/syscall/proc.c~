@@ -7,6 +7,9 @@
  *
  * @author Kartik Subramanian <ksubrama@andrew.cmu.edu>
  * @date 2008-11-12
+ *
+ * Author: shang <shang@andrew.cmu.edu>
+ *         jian wang <jianw3@andrew.cmu.edu>
  */
 
 #include <exports.h>
@@ -15,7 +18,7 @@
 #include <kernel.h>
 #include <syscall.h>
 #include <sched.h>
-
+#include <lock.h>
 #include <arm/reg.h>
 #include <arm/psr.h>
 #include <arm/exception.h>
@@ -39,9 +42,9 @@ int task_create(task_t* tasks  __attribute__((unused)), size_t num_tasks  __attr
 		if(tasks[i].T < tasks[i].C || tasks[i].T == 0)
 			return ESCHED;
 	}
-	if(!assign_schedule(&tasks, num_tasks))//ub_test
-		return ESCHED;
-
+	//if(!assign_schedule(&tasks, num_tasks))//ub_test
+	//	return ESCHED;
+	printf("task_CREATE r4:%x	r5:%d	r6:%x	C:%d	T:%d\n",tasks[0].lambda,tasks[0].data,tasks[0].stack_pos,tasks[0].C,tasks[0].T);
 	disable_interrupts();
 	mutex_init();
 	allocate_tasks(&tasks, num_tasks);

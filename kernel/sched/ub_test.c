@@ -4,6 +4,9 @@
  *
  * @author Kartik Subramanian <ksubrama@andrew.cmu.edu>
  * @date 2008-11-20
+ *
+ * Author: shang <shang@andrew.cmu.edu>
+ *         jian wang <jianw3@andrew.cmu.edu>
  */
 
 //#define DEBUG 0
@@ -31,7 +34,7 @@ int assign_schedule(task_t** tasks  __attribute__((unused)), size_t num_tasks  _
 {
 	int u_n = 0, u_max;
 	unsigned i, j;
-	if(num_tasks == 0)
+	if(num_tasks == 0 || num_tasks == 1)
 		return 1;	
 
 	task_t tmp_task;
