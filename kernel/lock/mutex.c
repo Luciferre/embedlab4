@@ -84,11 +84,11 @@ int mutex_lock(int mutex  __attribute__((unused)))
             tcb_t *temp_tcb;
             cur_tcb->mutex_sleep_queue = NULL;
             cur_tcb->pending = 1;
-            temp_tcb = cur_holding_tcb->mutex_sleep_queue;
+            temp_tcb = gtMutex[mutex].pSleep_queue;
             if(!temp_tcb){
                 //null queue
                 printf("cur holding tcb %d, no sleeo queue\n",cur_tcb);
-                cur_holding_tcb->mutex_sleep_queue = cur_tcb;
+                gtMutex[mutex].pSleep_queue = cur_tcb;
             }else{
                 while(temp_tcb->mutex_sleep_queue){
                     temp_tcb = temp_tcb->mutex_sleep_queue;
@@ -137,12 +137,12 @@ int mutex_unlock(int mutex  __attribute__((unused)))
     // move the task from the sleep queue
     first_tcb_in_queue = gtMutex[mutex].pSleep_queue;
     if(first_tcb_in_queue){
-        printf("cur prio %d, next in queue %d\n",cur_tcb->cur_prio,first_tcb_in_queue->cur_prio);
+        printf("cur prio %d, next in queue %d\n",cur_tcb->native_prio,first_tcb_in_queue->native_prio);
         //move this task to the run queue
         gtMutex[mutex].pSleep_queue = first_tcb_in_queue->mutex_sleep_queue;
         first_tcb_in_queue->mutex_sleep_queue = NULL;
         first_tcb_in_queue->pending = 0;
-        runqueue_add(first_tcb_in_queue,first_tcb_in_queue->cur_prio);
+        runqueue_add(first_tcb_in_queue,first_tcb_in_queue->native_prio);
     }else{
         //no task is waiting for this mutex
         gtMutex[mutex].bLock = FALSE;
