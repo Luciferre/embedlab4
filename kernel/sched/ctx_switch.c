@@ -41,10 +41,11 @@ void dispatch_init(tcb_t* idle __attribute__((unused)))
 void dispatch_save(void)
 {
 	tcb_t *last_tcb = cur_tcb;
-	uint8_t prio = highest_prio();
-	printf("dispatch save %d\n",prio);
 	if(last_tcb->pending != 1)
 		runqueue_add(last_tcb, last_tcb->native_prio);
+	uint8_t prio = highest_prio();
+	printf("dispatch save %d\n",prio);
+	
 	cur_tcb = runqueue_remove(prio);	
 	printf("context switch from %d to %d \n", last_tcb->native_prio, cur_tcb->native_prio);
     	ctx_switch_full(&(cur_tcb->context),&(last_tcb->context)) ;

@@ -45,8 +45,7 @@ void dispatch_save(void)
 	printf("dispatch save %d\n",prio);
 	if(last_tcb->pending != 1)
 		runqueue_add(last_tcb, last_tcb->native_prio);
-	cur_tcb = runqueue_remove(prio);
-	
+	cur_tcb = runqueue_remove(prio);	
 	printf("context switch from %d to %d \n", last_tcb->native_prio, cur_tcb->native_prio);
     	ctx_switch_full(&(cur_tcb->context),&(last_tcb->context)) ;
 
