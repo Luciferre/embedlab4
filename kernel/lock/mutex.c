@@ -44,12 +44,11 @@ int mutex_create_swi(void)
     int index = 0;
     int retVal = 0;
     while((gtMutex[index].bAvailable != TRUE) && (index < OS_NUM_MUTEX)){
-        printf("index %d not avai\n",index);
         index++;
     }
     if(index == OS_NUM_MUTEX){
         enable_interrupts();
-        retVal = EBUSY;
+        retVal = ENOMEM;
     }
     else{
         gtMutex[index].bAvailable = FALSE;
@@ -123,11 +122,9 @@ int mutex_unlock(int mutex  __attribute__((unused)))
     holding_tcb = gtMutex[mutex].pHolding_Tcb;
     //sanity check
     printf("cur_tcb %d, holding tcb %d\n",cur_tcb,holding_tcb);
-    if(cur_tcb == NULL){
-        panic("cur_tcb is null");
-    }
     if(holding_tcb == NULL){
-        panic("holding tcb is null");
+        enable_interrupts();
+        return EINVAL;
     }
     //check whether the cur tcb is the holding tch of this mutex
     if(cur_tcb != holding_tcb){
