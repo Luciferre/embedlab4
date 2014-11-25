@@ -7,6 +7,9 @@
  *
  * @author Kartik Subramanian <ksubrama@andrew.cmu.edu>
  * @date   2008-11-16
+ *
+ * Author: shang <shang@andrew.cmu.edu>
+ *         jian wang <jianw3@andrew.cmu.edu>
  */
 
 #include <types.h>

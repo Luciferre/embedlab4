@@ -35,7 +35,7 @@ void fun1(void* str)
 	}
 	sleep(ct * 10);
 	printf("Time now is %lu\n",time());
-
+	//printf("fun1 address: %x \n", fun1); 
 	task_t tasks[1];
 	tasks[0].lambda = fun1;
 	tasks[0].data = (void*)0;

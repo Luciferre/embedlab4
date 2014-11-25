@@ -4,6 +4,9 @@
  *
  * @author Kartik Subramanian <ksubrama@andrew.cmu.edu>
  * @date 2008-11-21
+ *
+ * Author: shang <shang@andrew.cmu.edu>
+ *         jian wang <jianw3@andrew.cmu.edu>
  */
 
 #include <types.h>
@@ -44,10 +47,10 @@ void dispatch_save(void)
 	if(last_tcb->pending != 1)
 		runqueue_add(last_tcb, last_tcb->native_prio);
 	uint8_t prio = highest_prio();
-	printf("dispatch save %d\n",prio);
+	//printf("dispatch save %d\n",prio);
 	
 	cur_tcb = runqueue_remove(prio);	
-	printf("context switch from %d to %d \n", last_tcb->native_prio, cur_tcb->native_prio);
+	//printf("context switch from %d to %d \n", last_tcb->native_prio, cur_tcb->native_prio);
     	ctx_switch_full(&(cur_tcb->context),&(last_tcb->context)) ;
 
 }
@@ -61,9 +64,9 @@ void dispatch_save(void)
 void dispatch_nosave(void)
 {
     	uint8_t prio = highest_prio();
-      	printf("dispatch nosave,prio %d\n",prio);
+      //	printf("dispatch nosave,prio %d\n",prio);
 	cur_tcb = runqueue_remove(prio);
-	printf("context switch to %d \n", cur_tcb->native_prio);
+	//printf("context switch to %d \n", cur_tcb->native_prio);
    	ctx_switch_half(&(cur_tcb->context)) ;
 
 }
@@ -78,9 +81,9 @@ void dispatch_sleep(void)
 {
 	tcb_t *last_tcb = cur_tcb;
 	uint8_t prio = highest_prio();
-	printf("dispatch sleep %d\n",prio);
+	//printf("dispatch sleep %d\n",prio);
 	cur_tcb = runqueue_remove(prio);
-	printf("context switch from %d to %d \n", last_tcb->native_prio, cur_tcb->native_prio);
+	//printf("context switch from %d to %d \n", last_tcb->native_prio, cur_tcb->native_prio);
     	ctx_switch_full(&(cur_tcb->context),&(last_tcb->context)) ;
 
 }

@@ -1,9 +1,9 @@
 /** @file cyclone.c
  *
  * @brief recursively calls task create
- *				Tests: 1. task_create cancels current task
- *							 2. Timer has at least 10ms granularity
- *							 3. Sleep works properly
+ *	    Tests: 1. task_create cancels current task
+ *	           2. Timer has at least 10ms granularity
+ *		   3. Sleep works properly
  * @note  Dont think this is realted to the OS cyclone
  *
  * @author Tao Yang(taoy)
@@ -35,7 +35,7 @@ void fun1(void* str)
 	}
 	sleep(ct * 10);
 	printf("Time now is %lu\n",time());
-
+	printf("fun1 address: %x \n", fun1); 
 	task_t tasks[1];
 	tasks[0].lambda = fun1;
 	tasks[0].data = (void*)0;

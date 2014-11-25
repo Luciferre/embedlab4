@@ -4,6 +4,9 @@
  *
  * @author Kartik Subramanian <ksubrama@andrew.cmu.edu>
  * @date 2008-11-21
+ *
+ * Author: shang <shang@andrew.cmu.edu>
+ *         jian wang <jianw3@andrew.cmu.edu>
  */
 
 #include <types.h>
@@ -110,7 +113,7 @@ tcb_t* runqueue_remove(uint8_t prio  __attribute__((unused)))
 	if(run_bits[OSTCBY] == 0)
         	group_run_bits = group_run_bits & ~(0x1 << OSTCBY);
 	printf("remove %d\n",prio);
-	//printf("r4:%x	r5:%d	r6:%x	r7:%x\n",removed_tcb->context.r4,removed_tcb->context.r5,removed_tcb->context.r6, removed_tcb->context.r7);
+	printf("r4:%x	r5:%d	r6:%x	r7:%x\n",removed_tcb->context.r4,removed_tcb->context.r5,removed_tcb->context.r6, removed_tcb->context.r7);
 	//printf("group_run_bits = %x, run_bits = %x\n", group_run_bits, run_bits[OSTCBY]);
 	return removed_tcb;
 }
