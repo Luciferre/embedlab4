@@ -39,7 +39,7 @@ void mutex_init()
 
 int mutex_create_swi(void)
 {
-   // printf("mutex create");
+    printf("mutex create");
     disable_interrupts();
     //find the first available mutex
     int index = 0;
@@ -87,7 +87,7 @@ int mutex_lock(int mutex  __attribute__((unused)))
             temp_tcb = gtMutex[mutex].pSleep_queue;
             if(!temp_tcb){
                 //null queue
-        //        printf("cur holding tcb %d, no sleeo queue\n",cur_tcb);
+                printf("cur holding tcb %d, no sleeo queue\n",cur_tcb);
                 gtMutex[mutex].pSleep_queue = cur_tcb;
             }else{
                 while(temp_tcb->mutex_sleep_queue){
@@ -122,27 +122,28 @@ int mutex_unlock(int mutex  __attribute__((unused)))
     cur_tcb = get_cur_tcb();
     holding_tcb = gtMutex[mutex].pHolding_Tcb;
     //sanity check
-    //printf("cur_tcb %d, holding tcb %d\n",cur_tcb,holding_tcb);
-   
+    printf("cur_tcb %d, holding tcb %d\n",cur_tcb,holding_tcb);
+
     if(gtMutex[mutex].bAvailable == TRUE){
 printf("mutex %d avail %d\n",mutex,gtMutex[mutex].bAvailable);
         enable_interrupts();
         return -EPERM;
     }
-    if(gtMutex[mutex].bAvailable == FALSE){
+    if((gtMutex[mutex].bAvailable == FALSE) &&
+            (gtMutex[mutex].pHolding_Tcb == NULL)){
 printf("mutex %d avail %d\n",mutex,gtMutex[mutex].bAvailable);
         enable_interrupts();
-        return 1;
+        return 0;
     }
     //check whether the cur tcb is the holding tch of this mutex
     if(cur_tcb != holding_tcb){
        enable_interrupts();
-       return 1;
+       return 0;
     }
     // move the task from the sleep queue
     first_tcb_in_queue = gtMutex[mutex].pSleep_queue;
     if(first_tcb_in_queue){
-    //    printf("cur prio %d, next in queue %d\n",cur_tcb->native_prio,first_tcb_in_queue->native_prio);
+        printf("cur prio %d, next in queue %d\n",cur_tcb->native_prio,first_tcb_in_queue->native_prio);
         //move this task to the run queue
         gtMutex[mutex].pSleep_queue = first_tcb_in_queue->mutex_sleep_queue;
         first_tcb_in_queue->mutex_sleep_queue = NULL;
