@@ -69,8 +69,8 @@ void allocate_tasks(task_t** tasks  __attribute__((unused)), size_t num_tasks  _
 		system_tcb[i+1].context.sp = (void *)system_tcb[i+1].kstack_high;
 		system_tcb[i+1].context.lr = launch_task;
 		system_tcb[i+1].context.r8 = global_data;
-		printf("r4:%x	r5:%d	r6:%x	r7:%x\n",system_tcb[i+1].context.r4,system_tcb[i+1].context.r5,system_tcb[i+1].context.r6, system_tcb[i+1].context.r7);
-		printf("task r4:%x	r5:%d	r6:%x	C:%d	T:%d\n",(*tasks)[i].lambda,(*tasks)[i].data,(*tasks)[i].stack_pos, (*tasks)[i].C, (*tasks)[i].T);
+		//printf("r4:%x	r5:%d	r6:%x	r7:%x\n",system_tcb[i+1].context.r4,system_tcb[i+1].context.r5,system_tcb[i+1].context.r6, system_tcb[i+1].context.r7);
+		//printf("task r4:%x	r5:%d	r6:%x	C:%d	T:%d\n",(*tasks)[i].lambda,(*tasks)[i].data,(*tasks)[i].stack_pos, (*tasks)[i].C, (*tasks)[i].T);
 		system_tcb[i+1].holds_lock = 0;
 		system_tcb[i+1].sleep_queue = 0;
 		system_tcb[i+1].mutex_sleep_queue = 0;

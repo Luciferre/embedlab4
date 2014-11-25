@@ -49,36 +49,36 @@ int mutex_create_swi(void)
     }
     if(index == OS_NUM_MUTEX){
         enable_interrupts();
-        retVal = ENOMEM;
+        retVal = -ENOMEM;
     }
     else{
         gtMutex[index].bAvailable = FALSE;
         retVal = index;
     }
     enable_interrupts();
-  //  printf("mutex create retVal %d\n",retVal);
+   printf("mutex create retVal %d\n",retVal);
 	return retVal; // fix this to return the correct value
 }
 
 int mutex_lock(int mutex  __attribute__((unused)))
 {
- //   printf("mutex lock %d\n",mutex);
+    printf("mutex lock %d\n",mutex);
     tcb_t *cur_tcb=NULL;
     tcb_t *cur_holding_tcb=NULL;
     disable_interrupts();
     if((mutex >= OS_NUM_MUTEX) || (mutex < 0)){
-     //   printf("wrong mutex\n");
+        printf("wrong mutex\n");
         enable_interrupts();
-        return EINVAL;
+        return -EINVAL;
     }
     cur_tcb = get_cur_tcb();
     if(gtMutex[mutex].bLock == TRUE){
         cur_holding_tcb = gtMutex[mutex].pHolding_Tcb;
         if(cur_tcb == cur_holding_tcb){
-      //  printf("mutex lock twice %d\n",mutex);
+        printf("mutex lock twice %d\n",mutex);
             //a task can not lock a mutex twice
             enable_interrupts();
-            return EINVAL;
+            return -EDEADLOCK;
         }else{
             //need to put the task to the sleep queue
             tcb_t *temp_tcb;
@@ -110,28 +110,34 @@ int mutex_lock(int mutex  __attribute__((unused)))
 
 int mutex_unlock(int mutex  __attribute__((unused)))
 {
-    //    printf("mutex unlock %d\n",mutex);
+    printf("mutex unlock %d\n",mutex);
     tcb_t *cur_tcb;
     tcb_t *holding_tcb;
     tcb_t *first_tcb_in_queue;
     disable_interrupts();
     if((mutex >= OS_NUM_MUTEX) || (mutex < 0)){
         enable_interrupts();
-        return EINVAL;
+        return -EINVAL;
     }
     cur_tcb = get_cur_tcb();
     holding_tcb = gtMutex[mutex].pHolding_Tcb;
     //sanity check
-    printf("cur_tcb %d, holding tcb %d\n",cur_tcb,holding_tcb);
-  //  printf("cur_tcb %d, holding tcb %d\n",cur_tcb,holding_tcb);
-    if(holding_tcb == NULL){
+    //printf("cur_tcb %d, holding tcb %d\n",cur_tcb,holding_tcb);
+   
+    if(gtMutex[mutex].bAvailable == TRUE){
+printf("mutex %d avail %d\n",mutex,gtMutex[mutex].bAvailable);
         enable_interrupts();
-        return EINVAL;
+        return -EPERM;
+    }
+    if(gtMutex[mutex].bAvailable == FALSE){
+printf("mutex %d avail %d\n",mutex,gtMutex[mutex].bAvailable);
+        enable_interrupts();
+        return 1;
     }
     //check whether the cur tcb is the holding tch of this mutex
     if(cur_tcb != holding_tcb){
        enable_interrupts();
-       return -EPERM;
+       return 1;
     }
     // move the task from the sleep queue
     first_tcb_in_queue = gtMutex[mutex].pSleep_queue;
