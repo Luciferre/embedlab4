@@ -31,20 +31,28 @@ void fun1(void* str)
 	}
 	ret2 = mutex_create();
 	check_return(errno,ENOMEM,"3. Mutex Create returns ENOMEM");
+printf("ret %d\n", ret2);
 	ret2 = mutex_unlock(165);
 	check_return(errno,EINVAL,"4. Mutex Unlock return EINVAL");
+printf("ret %d\n", ret2);
 	ret2 = mutex_unlock(23);
 	check_return(errno,EPERM,"5. Mutex Unlock return EPERM");
+printf("ret %d\n", ret2);
 	ret2 = mutex_lock(124);
 	check_return(errno,EINVAL,"6. Mutex Lock return EINVAL");
+printf("ret %d\n", ret2);
 	ret2 = mutex_lock(4);
 	check_return(ret2,0,"7. Mutex Lock return success");
+printf("ret %d\n", ret2);
 	ret2 = mutex_lock(4);
 	check_return(errno,EDEADLOCK,"8. Mutex Lock return EDEADLOCK");
+printf("ret %d\n", ret2);
 	ret2 = mutex_unlock(4);
 	check_return(ret2,0,"9. Mutex Unlock return success");
+printf("ret %d\n", ret2);
 	ret2 = event_wait(10000);
 	check_return(errno,EINVAL,"10. Event Wait return EINVAL");
+printf("ret %d\n", ret2);
 	puts("TEST END!\n");
 	while(1) {
 		spin++;

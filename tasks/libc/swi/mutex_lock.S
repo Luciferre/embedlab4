@@ -11,12 +11,13 @@
 	.file "mutex_lock.S"
 
 FUNC(mutex_lock)
-	ldr	r3, =errno
 	swi	MUTEX_LOCK
-	cmp	r0, #0
-	bge	ret
-	neg	r0, r0
-	str	r0, [r3]
-	mov	r0, #-1
-ret:
-	mov	pc, lr
+	LDR     r1, =errno
+	MOV     r2, r0
+        cmp     r0, #0	
+        bge     L2   
+	neg	r2, r2
+        MOV     r0, #-1
+L2:
+        STR     r2,[r1]
+        bx      lr
