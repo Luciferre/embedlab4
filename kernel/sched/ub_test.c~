@@ -32,15 +32,15 @@
  */
 int assign_schedule(task_t** tasks  __attribute__((unused)), size_t num_tasks  __attribute__((unused)))
 {
-	int u_n = 0, u_max;
+	float u_n = 0, u_max;
 	unsigned i, j;
-	if(num_tasks == 0)
+	if(num_tasks == 0 || num_tasks == 1)
 		return 1;	
 
 	task_t tmp_task;
 	for(i =0; i < num_tasks; i++)
 	{
-		u_n += ((*tasks)[i].C) / ((*tasks)[i].T);
+		
 		for(j = 0; j < num_tasks; j++)
 		{
 			if((*tasks)[j].T > (*tasks)[j+1].T){
@@ -51,10 +51,18 @@ int assign_schedule(task_t** tasks  __attribute__((unused)), size_t num_tasks  _
 		}
 		
 	}
+	for(i =0; i < num_tasks; i++)
+	{		
+		u_n += ((*tasks)[i].C)*1000 / ((*tasks)[i].T*1000)*1000;
+		if(i == num_tasks - 1)
+			u_n += ((*tasks)[i].B)*1000 / ((*tasks)[i].T*1000)*1000;		
+	}
 	
 	u_max = num_tasks * ((2 << (1 / num_tasks)) - 1);
+	//printf("ubtest u_max %d u_n %d\n", u_max, u_n);	
 	if(u_n <= u_max)		
 		return 1;
+	
 	return 0; 
 }
 	

@@ -8,9 +8,8 @@
 
 #include <asm.h>
 #include <bits/swi.h>
-
 	.file "task_create.S"
-	.global errno
+
 FUNC(task_create)
 	swi	CREATE_SWI
 	LDR     r1, =errno
