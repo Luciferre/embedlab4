@@ -16,11 +16,7 @@
 	.file	"write.S"
 	.text
 
-	.global	write
-	.global errno
 FUNC(write)
-write:
-
 	swi	WRITE_SWI
 	LDR     r1, =errno
 	MOV     r2, r0

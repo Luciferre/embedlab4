@@ -38,7 +38,7 @@ void mutex_init()
     }
 }
 
-int mutex_create_swi(void)
+int mutex_create(void)
 {
     //printf("mutex create");
     disable_interrupts();
