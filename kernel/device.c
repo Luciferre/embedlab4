@@ -15,6 +15,7 @@
 #include <arm/reg.h>
 #include <arm/psr.h>
 #include <arm/exception.h>
+#include <bits/errno.h>
 
 /**
  * @brief Fake device maintainence structure.
@@ -60,11 +61,14 @@ void dev_init(void)
  *
  * @param dev  Device number.
  */
-void dev_wait(unsigned int dev __attribute__((unused)))
+int dev_wait(unsigned int dev __attribute__((unused)))
 {
 	disable_interrupts();
 
   	tcb_t* cur_tcb = get_cur_tcb();
+    if(cur_tcb->holds_lock !=0){
+        return -EHOLDSLOCK;
+    }
 	//printf("dev_wait sleep %d\n", cur_tcb->native_prio);
  	tcb_t* sleep_queue = devices[dev].sleep_q;
   	if(sleep_queue == 0)
@@ -100,7 +104,7 @@ void dev_update(unsigned long millis __attribute__((unused)))
 	        if (devices[i].next_match <= millis) {
         		devices[i].next_match += dev_freq[i];
             		tcb_t* sleep_queue = devices[i].sleep_q;
-			
+
             		if (sleep_queue != 0) {
 				//printf("dev_queue %d\n", sleep_queue);
 				flag = TRUE;
@@ -110,7 +114,7 @@ void dev_update(unsigned long millis __attribute__((unused)))
 				   	sleep_queue = sleep_queue->sleep_queue;
 				 }
               			 devices[i].sleep_q = 0;
-		
+
            		 }
 		}
 	}

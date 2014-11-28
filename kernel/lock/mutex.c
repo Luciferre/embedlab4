@@ -22,6 +22,7 @@
 #include <exports.h> // temp
 #endif
 #define NULL 0
+#define HIGHEST_PRIORITY 0
 mutex_t gtMutex[OS_NUM_MUTEX];
 
 void mutex_init()
@@ -105,6 +106,7 @@ int mutex_lock(int mutex  __attribute__((unused)))
 
     }
     cur_tcb->holds_lock++;
+    cur_tcb->cur_prio = HIGHEST_PRIORITY;
     gtMutex[mutex].pHolding_Tcb = cur_tcb;
     enable_interrupts();
     return 0;
@@ -150,10 +152,18 @@ int mutex_unlock(int mutex  __attribute__((unused)))
         gtMutex[mutex].pSleep_queue = first_tcb_in_queue->mutex_sleep_queue;
         first_tcb_in_queue->mutex_sleep_queue = NULL;
         first_tcb_in_queue->pending = 0;
-        runqueue_add(first_tcb_in_queue,first_tcb_in_queue->native_prio);
+        first_tcb_in_queue->cur_prio = first_tcb_in_queue->native_prio;
+        runqueue_add(first_tcb_in_queue,first_tcb_in_queue->cur_prio);
     }else{
         //no task is waiting for this mutex
         gtMutex[mutex].bLock = FALSE;
+    }
+
+    if(cur_tcb->holds_lock>1){
+        cur_tcb->holds_lock--;
+    }else{
+        cur_tcb->holds_lock = 0;
+        cur_tcb->cur_prio = cur_tcb->native_prio;
     }
     dispatch_save();
     enable_interrupts();
