@@ -2,12 +2,12 @@
  *
  * @brief kernel main
  *
- * @author 
- *	   
- *	   
- * @date   
+ * @author
+ *
+ *
+ * @date
  */
- 
+
 #include <kernel.h>
 #include <task.h>
 #include <sched.h>
@@ -27,7 +27,7 @@ uint32_t global_data;
 
 int ksp = 0;
 //int r8 =0;
-//int err =0;
+int err =0;
 unsigned int irqStack[1024];
 unsigned long irqStackTop;
 extern void S_Handler();
@@ -37,7 +37,7 @@ extern int user_mode();
 extern void prepareIrqStack(unsigned long);
 extern void timerIrqSetup();
 extern void disableInterrupt();
-
+extern void mutex_init();
 int kmain(int argc __attribute__((unused)), char** argv  __attribute__((unused)), uint32_t table)
 {
 
@@ -93,6 +93,7 @@ int kmain(int argc __attribute__((unused)), char** argv  __attribute__((unused))
   	 *irqAddr = 0xe51ff004;
   	 *(irqAddr + 1) =(int) &irqHandlerAsm;
 
+     mutex_init();
   	 prepareIrqStack(irqStackTop);
   	 timerIrqSetup();
 	//user mode
@@ -111,8 +112,8 @@ int kmain(int argc __attribute__((unused)), char** argv  __attribute__((unused))
      	    msr cpsr,r1;\
      	    ldmfd sp!, {r1};"
    	 );
-         
+
 	return err;
-		
+
 	assert(0);        /* should never get here */
 }

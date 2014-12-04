@@ -17,7 +17,6 @@ void timerIrqSetup(){
     reg_write(INT_ICMR_ADDR, 1<<INT_OSTMR_0);
     /*set the value of OSMR 0 to 10ms*/
     reg_write(OSTMR_OSMR_ADDR(0),OSTMR_COUNT);
-    //reg_write(OSTMR_OSMR_ADDR(0),3250);
     /*enable the OSMR0 */
     reg_set(OSTMR_OIER_ADDR, OSTMR_OIER_E0);
     reg_clear(OSTMR_OSCR_ADDR, 0xffffffff);

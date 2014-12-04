@@ -26,7 +26,6 @@
 uint32_t global_data;
 
 int ksp = 0;
-//int r8 =0;
 int err =0;
 unsigned int irqStack[1024];
 unsigned long irqStackTop;

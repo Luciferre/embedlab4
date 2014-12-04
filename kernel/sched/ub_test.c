@@ -82,6 +82,7 @@ int assign_schedule(task_t** tasks  __attribute__((unused)), size_t num_tasks  _
 	
 	//u_max = num_tasks * ((2 << (1 / num_tasks)) - 1);
 	u_max = cache[num_tasks];
+	
 	if(u_n <= u_max)		
 		return 1;
 	

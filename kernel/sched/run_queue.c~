@@ -89,7 +89,7 @@ void runqueue_add(tcb_t* tcb  __attribute__((unused)), uint8_t prio  __attribute
 	if(run_list[prio] == 0){
 		run_list[prio] = tcb;
 	}
-	printf("add %d\n", prio);
+	//printf("add %d\n", prio);
 	//printf("group_run_bits = %x, run_bits = %x\n", group_run_bits, run_bits[OSTCBY]);
 }
 

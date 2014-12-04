@@ -69,6 +69,7 @@ int assign_schedule(task_t** tasks  __attribute__((unused)), size_t num_tasks  _
 	}
 	for(i =0; i < num_tasks; i++)
 	{		
+<<<<<<< HEAD
 		if(i == num_tasks - 1){
 			printf("B: %d  T: %d \n",(*tasks)[i].B,(*tasks)[i].T);
 			u_n += ((double)(*tasks)[i].B)/ ((*tasks)[i].T);
@@ -78,6 +79,11 @@ int assign_schedule(task_t** tasks  __attribute__((unused)), size_t num_tasks  _
 		u_n += ((double)(*tasks)[i].C)/ ((*tasks)[i].T);
 		printf("C: %d  T: %d \n",(*tasks)[i].C,(*tasks)[i].T);
 			
+=======
+		u_n += ((*tasks)[i].C)/ ((*tasks)[i].T);
+		if(i == num_tasks - 1)
+			u_n += ((*tasks)[i].B)/ ((*tasks)[i].T);		
+>>>>>>> master
 	}
 	
 	//u_max = num_tasks * ((2 << (1 / num_tasks)) - 1);
