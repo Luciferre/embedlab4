@@ -52,7 +52,7 @@ int main(int argc, char** argv)
 	tasks[1].stack_pos = (void*)0xa1000000;
 	tasks[1].C = 1;
 	tasks[1].T = PERIOD_DEV1;
-	tasks[1].B = 0;
+	tasks[1].B = 180;
 	
 	task_create(tasks, 2);
 	argc=argc; /* remove compiler warning */

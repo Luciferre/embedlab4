@@ -86,6 +86,7 @@ int dev_wait(unsigned int dev __attribute__((unused)))
 
   	dispatch_sleep();
 	enable_interrupts();
+	return 0;
 }
 
 /**

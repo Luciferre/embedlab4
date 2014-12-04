@@ -58,8 +58,8 @@ int event_wait(unsigned int dev  __attribute__((unused)))
   	{
 		return -EINVAL;
   	}
-  	dev_wait(dev);
-  return 1; /* remove this line after adding your code */
+  	return dev_wait(dev);
+
 }
 
 /* An invalid syscall causes the kernel to exit. */
