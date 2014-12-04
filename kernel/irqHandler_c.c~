@@ -10,6 +10,7 @@
 #include <arm/reg.h>
 #include <arm/timer.h>
 #include <arm/interrupt.h>
+#include <device.h>
 
 volatile unsigned long system_time=0;
 volatile unsigned long time_drift=0;

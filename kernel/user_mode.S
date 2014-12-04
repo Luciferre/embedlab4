@@ -13,7 +13,6 @@
 
 user_mode:
 	sub 	sp, sp, #4
-@	stmfd	sp!, {r8}
 	stmfd	sp!, {r0-r12, lr}
 	ldr	r3, =ksp
 	str	sp, [r3]
@@ -25,8 +24,5 @@ user_mode:
 	msr	cpsr, r4
 
 	ldr	sp, =0xa3000000
-	@set up user stack
-	@stmfd	sp!,{r0}
-	@stmfd	sp!,{r1}
 	ldr	pc, =0xa0000000
 	

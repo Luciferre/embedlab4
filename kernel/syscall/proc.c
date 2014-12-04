@@ -44,7 +44,7 @@ int task_create(task_t* tasks  __attribute__((unused)), size_t num_tasks  __attr
 	}
 	if(!assign_schedule(&tasks, num_tasks))//ub_test
 		return -ESCHED;
-	//printf("task_CREATE r4:%x	r5:%d	r6:%x	C:%d	T:%d\n",tasks[0].lambda,tasks[0].data,tasks[0].stack_pos,tasks[0].C,tasks[0].T);
+	
 	disable_interrupts();
 	allocate_tasks(&tasks, num_tasks);
 
@@ -58,8 +58,7 @@ int event_wait(unsigned int dev  __attribute__((unused)))
   	{
 		return -EINVAL;
   	}
-  	dev_wait(dev);
-  return 1; /* remove this line after adding your code */
+  	return dev_wait(dev);
 }
 
 /* An invalid syscall causes the kernel to exit. */

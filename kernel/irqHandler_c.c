@@ -21,7 +21,6 @@ void irqHandler(){
 
     if((icprValue & (1<<INT_OSTMR_0)) == 0)
        return;
-//    system_time++;
 
     oscrValue = reg_read(OSTMR_OSCR_ADDR);
 

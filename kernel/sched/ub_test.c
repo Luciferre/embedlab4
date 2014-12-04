@@ -59,7 +59,7 @@ int assign_schedule(task_t** tasks  __attribute__((unused)), size_t num_tasks  _
 	}
 	
 	u_max = num_tasks * ((2 << (1 / num_tasks)) - 1);
-	//printf("ubtest u_max %d u_n %d\n", u_max, u_n);	
+	
 	if(u_n <= u_max)		
 		return 1;
 	

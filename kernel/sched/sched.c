@@ -54,7 +54,6 @@ static void __attribute__((unused)) idle(void)
  */
 void allocate_tasks(task_t** tasks  __attribute__((unused)), size_t num_tasks  __attribute__((unused)))
 {
-	//printf("allocate task\n");
 	unsigned int i;
 	dev_init();
 	runqueue_init();
@@ -69,15 +68,11 @@ void allocate_tasks(task_t** tasks  __attribute__((unused)), size_t num_tasks  _
         	system_tcb[i+1].context.r7 = (int)system_tcb[i+1].kstack_high;
 		system_tcb[i+1].context.sp = (void *)system_tcb[i+1].kstack_high;
 		system_tcb[i+1].context.lr = launch_task;
-		system_tcb[i+1].context.r8 = global_data;
-		//printf("r4:%x	r5:%d	r6:%x	r7:%x\n",system_tcb[i+1].context.r4,system_tcb[i+1].context.r5,system_tcb[i+1].context.r6, system_tcb[i+1].context.r7);
-		//printf("task r4:%x	r5:%d	r6:%x	C:%d	T:%d\n",(*tasks)[i].lambda,(*tasks)[i].data,(*tasks)[i].stack_pos, (*tasks)[i].C, (*tasks)[i].T);
+		system_tcb[i+1].context.r8 = global_data;		
 		system_tcb[i+1].holds_lock = 0;
 		system_tcb[i+1].sleep_queue = 0;
 		system_tcb[i+1].mutex_sleep_queue = 0;
-		system_tcb[i+1].pending = 0;
-		//system_tcb[i].kstack[0] = (uint32_t)tasks[i]->stack_pos;//how to initialize?
-		//system_tcb[i].kstack_high[0] = system_tcb[i].kstack[0] + OS_KSTACK_SIZE/sizeof(uint32_t); // how to initialize?
+		system_tcb[i+1].pending = 0;		
 
 		runqueue_add(&system_tcb[i+1], i+1);
 	}
@@ -94,10 +89,9 @@ void allocate_tasks(task_t** tasks  __attribute__((unused)), size_t num_tasks  _
 	system_tcb[IDLE_PRIO].holds_lock = 0;
 	system_tcb[IDLE_PRIO].sleep_queue = 0;
 	system_tcb[IDLE_PRIO].mutex_sleep_queue = 0;
-	system_tcb[IDLE_PRIO].pending = 0;
-	//system_tcb[63].kstack[0] = (uint32_t) &idle_stack[0];//idle stack is useful?
+	system_tcb[IDLE_PRIO].pending = 0;	
 	runqueue_add(&system_tcb[IDLE_PRIO], IDLE_PRIO);
-	//dispatch_init(&system_tcb[63]);
+	
 	dispatch_nosave();
 
 }
